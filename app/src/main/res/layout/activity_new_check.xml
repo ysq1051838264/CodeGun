@@ -7,7 +7,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:background="@drawable/title_bg">
 
         <View
@@ -30,75 +30,115 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:background="@drawable/btn_bg_white"
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16sp"
-            android:layout_weight="1"
-            android:text="门店编号："
-            android:textColor="@color/color_gray_333333"
-            android:textSize="16sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/shopCode"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_weight="2"
-            android:text="11111"
-            android:textSize="16sp" />
-    </LinearLayout>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16sp"
+                android:layout_weight="1"
+                android:text="门店编号："
+                android:textColor="@color/color_gray_333333"
+                android:textSize="16sp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+            <TextView
+                android:id="@+id/shopCode"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_weight="2"
+                android:text="11111"
+                android:textSize="16sp" />
+        </LinearLayout>
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16sp"
-            android:layout_weight="1"
-            android:text="门        店："
-            android:textColor="@color/color_gray_333333"
-            android:textSize="16sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/shopName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_weight="2"
-            android:text="张三丰柜台"
-            android:textSize="16sp" />
-    </LinearLayout>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16sp"
+                android:layout_weight="1"
+                android:text="门        店："
+                android:textColor="@color/color_gray_333333"
+                android:textSize="16sp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+            <TextView
+                android:id="@+id/shopName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_weight="2"
+                android:text="张三丰柜台"
+                android:textSize="16sp" />
+        </LinearLayout>
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16sp"
-            android:layout_weight="1"
-            android:text="柜        台："
-            android:textColor="@color/color_gray_333333"
-            android:textSize="16sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-        <com.jiafeng.codegun.customzie.NiceSpinner
-            android:id="@+id/nice_spinner"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16sp"
+                android:layout_weight="1"
+                android:text="柜        台："
+                android:textColor="@color/color_gray_333333"
+                android:textSize="16sp" />
+
+            <com.jiafeng.codegun.customzie.NiceSpinner
+                android:id="@+id/nice_spinner"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="20dp"
+                android:layout_weight="2"
+                android:visibility="gone" />
+
+            <RelativeLayout
+                android:id="@+id/productType"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2">
+
+                <TextView
+                    android:id="@+id/storeTv"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:layout_width="wrap_content"
+                    android:layout_marginEnd="45dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:text="柜台1，柜台2" />
+
+                <ImageView
+                    android:id="@+id/image"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="30dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/pull" />
+            </RelativeLayout>
+        </LinearLayout>
+
     </LinearLayout>
 
     <Button

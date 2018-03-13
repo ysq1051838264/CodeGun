@@ -52,6 +52,8 @@ public class CheckDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 mAdapter.setModels(getPkData());
+                deficitBtn.setTextColor(CheckDetailActivity.this.getResources().getColor(R.color.text_bg));
+                winBtn.setTextColor(CheckDetailActivity.this.getResources().getColor(R.color.text_666666));
             }
         });
 
@@ -59,6 +61,8 @@ public class CheckDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 mAdapter.setModels(getData());
+                winBtn.setTextColor(CheckDetailActivity.this.getResources().getColor(R.color.text_bg));
+                deficitBtn.setTextColor(CheckDetailActivity.this.getResources().getColor(R.color.text_666666));
             }
         });
     }

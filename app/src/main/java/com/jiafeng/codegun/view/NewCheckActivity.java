@@ -4,21 +4,33 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jiafeng.codegun.R;
 import com.jiafeng.codegun.adapter.CheckModel;
 import com.jiafeng.codegun.customzie.NiceSpinner;
+import com.jiafeng.codegun.customzie.multiselect.model.StoreModel;
+import com.jiafeng.codegun.customzie.multiselect.widget.MultiSelectPopupWindows;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
 public class NewCheckActivity extends AppCompatActivity {
-    NiceSpinner niceSpinner;
     Button nextBtn;
     TextView shopName;
+    TextView storeTv;
+    ImageView image;
     View back;
+    RelativeLayout productType;
+
+    private List<StoreModel> stores;
+    private List<StoreModel> selectStores;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +39,7 @@ public class NewCheckActivity extends AppCompatActivity {
 
         initView();
         initData();
+        getData();
     }
 
     private void initData() {
@@ -37,10 +50,12 @@ public class NewCheckActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        niceSpinner = findViewById(R.id.nice_spinner);
+        productType = findViewById(R.id.productType);
+        storeTv = findViewById(R.id.storeTv);
+        image = findViewById(R.id.image);
         nextBtn = findViewById(R.id.nextBtn);
-        List<String> data = new LinkedList<>(Arrays.asList("柜台1", "柜台2", "柜台3", "柜台4", "柜台5"));
-        niceSpinner.attachDataSource(data);
+        back = findViewById(R.id.back);
+        shopName = findViewById(R.id.shopName);
 
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,18 +65,53 @@ public class NewCheckActivity extends AppCompatActivity {
                 model.sheetNo = "1111111";
                 model.storeName = "2柜台";
 
-                startActivity(ScanCodeActivity.getCallIntent(NewCheckActivity.this,model));
+                startActivity(ChengWeiScanActivity.getCallIntent(NewCheckActivity.this, model));
                 finish();
             }
         });
 
-        back = findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
+
+        productType.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MultiSelectPopupWindows productsMultiSelectPopupWindows = new MultiSelectPopupWindows(NewCheckActivity.this, productType, 230, stores);
+                image.setImageResource(R.drawable.push);
+                productsMultiSelectPopupWindows.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                    @Override
+                    public void onDismiss() {
+                        image.setImageResource(R.drawable.pull);
+
+                        selectStores = new ArrayList<>();
+                        StringBuilder s = new StringBuilder();
+                        for (StoreModel d : stores) {
+                            if (d.isChecked()) {
+                                selectStores.add(d);
+                                s.append(d.getStoreName()).append(",");
+                            }
+                        }
+
+                        storeTv.setText(s);
+                    }
+                });
+            }
+        });
     }
 
+
+    private void getData() {
+        stores = new ArrayList<>();
+        stores.add(new StoreModel("珠宝玉石1", false, "0"));
+        stores.add(new StoreModel("珠宝玉石2", false, "1"));
+        stores.add(new StoreModel("珠宝玉石3", false, "2"));
+        stores.add(new StoreModel("珠宝玉石4", false, "3"));
+        stores.add(new StoreModel("珠宝玉石5", false, "4"));
+        stores.add(new StoreModel("珠宝玉石6", false, "5"));
+        stores.add(new StoreModel("珠宝玉石7", false, "6"));
+    }
 }

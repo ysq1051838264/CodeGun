@@ -27,6 +27,7 @@ import com.jiafeng.codegun.util.ShareHelper;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
+import java.lang.reflect.Method;
 
 import retrofit2.Retrofit;
 import rx.Observable;
@@ -67,6 +68,7 @@ public class LoginActivity extends AppCompatActivity {
                     //用户授予了访问的权限
                     jump();
                 }
+
                 @Override
                 public void permissionDenied(@NonNull String[] permissions) {
                     //用户拒绝了访问的申请
@@ -77,11 +79,14 @@ public class LoginActivity extends AppCompatActivity {
 
     public void jump() {
         String mac = getLocalMacAddress();
+        String sn = getSerialNumber();
         String imei = getIMEI(LoginActivity.this);
 
+        //Toast.makeText(this, "sn是：" + sn +"   imei"+imei, Toast.LENGTH_SHORT).show();
+
         ShareHelper shareHelper = ShareHelper.initInstance(this);
-        shareHelper.setString(ShareHelper.KEY_IMEI,imei);
-        shareHelper.setString(ShareHelper.KEY_MAC,mac);
+        shareHelper.setString(ShareHelper.KEY_IMEI, imei);
+        shareHelper.setString(ShareHelper.KEY_MAC, mac);
 
         startActivity(new Intent(LoginActivity.this, CheckListActivity.class));
         finish();
@@ -135,6 +140,19 @@ public class LoginActivity extends AppCompatActivity {
         }
         String imei = telephonyManager.getDeviceId();
         return imei;
+    }
+
+    private String getSerialNumber(){
+        String serial = null;
+        try {
+            Class<?> c =Class.forName("android.os.SystemProperties");
+            Method get =c.getMethod("get", String.class);
+            serial = (String)get.invoke(c, "ro.serialno");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return serial;
     }
 
 

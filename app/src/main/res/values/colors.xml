@@ -13,9 +13,15 @@
     <color name="allbg">#EEEEEE</color>
     <color name="coloum">#EDEDED</color>
 
+    <color name="text_color">#0D3AA0</color>
+    <color name="text_bg">#003894</color>
+    <color name="text_666666">#666666</color>
+    <color name="pull_down_bg">#F7F7F7</color>
+    <color name="pull_down_text">#EAEAEA</color>
+
     <color name="white">#FFFFFF</color>
     <color name="ededed">#EDEDED</color>
-    <color name="edeeef">#edeeef</color>
+    <color name="edeeef">#bbc1c1</color>
     <color name="e6e6e6">#e6e6e6</color>
     <color name="color_blue">#123de0</color>
     <color name="color_gray_333333">#333333</color>

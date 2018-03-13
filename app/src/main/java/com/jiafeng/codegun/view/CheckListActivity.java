@@ -50,8 +50,6 @@ public class CheckListActivity extends AppCompatActivity {
 
         initView();
 
-//        getListData();
-
         initData();
     }
 
@@ -70,7 +68,7 @@ public class CheckListActivity extends AppCompatActivity {
                 if (models.get(position).isCompile()) {
                     startActivity(new Intent(CheckListActivity.this, CheckDetailActivity.class));
                 } else {
-                    startActivity(ScanCodeActivity.getCallIntent(CheckListActivity.this, models.get(position)));
+                    startActivity(ChengWeiScanActivity.getCallIntent(CheckListActivity.this, models.get(position)));
                 }
             }
 

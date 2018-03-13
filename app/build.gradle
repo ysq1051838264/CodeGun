@@ -9,9 +9,9 @@ android {
         versionCode 1
         versionName "1.0"
 //        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        ndk {
-            abiFilters 'x86', 'armeabi'
-        }
+//        ndk {
+//            abiFilters 'x86', 'armeabi'
+//        }
     }
 
     signingConfigs{
@@ -41,6 +41,8 @@ dependencies {
 //    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
     implementation files('libs/uhf_r_integration.jar')
+    compile files('libs/cw-deviceapi.jar')
+
     compile 'com.android.support:recyclerview-v7:26.1.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
 

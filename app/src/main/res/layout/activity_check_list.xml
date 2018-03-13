@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/edeeef"
+    android:background="@color/allbg"
     tools:context="com.jiafeng.codegun.view.MainActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:background="@drawable/title_bg">
 
         <TextView
