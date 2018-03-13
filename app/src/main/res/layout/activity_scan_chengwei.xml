@@ -151,13 +151,14 @@
             <SeekBar
                 android:id="@+id/seekbar"
                 android:layout_width="200dp"
-                android:layout_height="10dp"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@+id/tv"
                 android:progressDrawable="@drawable/seekbar_style"
-                android:max="35"
-                android:min="10"
-                android:progress="25" />
+                android:thumb="@drawable/thumb_bg"
+                android:maxHeight="10dp"
+                android:max="30"
+                android:progress="30" />
 
             <TextView
                 android:id="@+id/nameTv"
@@ -166,7 +167,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="30dp"
-                android:text="24" />
+                android:text="30" />
         </RelativeLayout>
     </LinearLayout>
 

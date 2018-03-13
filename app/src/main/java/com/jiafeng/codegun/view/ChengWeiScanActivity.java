@@ -63,7 +63,7 @@ public class ChengWeiScanActivity extends AppCompatActivity {
 
     private EPCadapter adapter;
 
-    int value = 25;
+    int value = 30;
 
     public static Intent getCallIntent(Context context, CheckModel model) {
         return new Intent(context, ChengWeiScanActivity.class)
@@ -99,7 +99,7 @@ public class ChengWeiScanActivity extends AppCompatActivity {
         shopName.setText(model.shopName);
         storeName.setText(model.storeName);
 
-        mReader.setPower(24);
+       // mReader.setPower(value);
 
         if (model.checkNum != null) {
             tagSum.setText(model.checkNum);
