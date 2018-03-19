@@ -3,6 +3,8 @@ package com.jiafeng.codegun.adapter;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import io.realm.RealmObject;
+
 /**
  * Created by yangshuquan on 2018/3/2.
  */
@@ -10,14 +12,14 @@ import android.os.Parcelable;
 /**
  * 订单model
  */
-public class CheckModel implements Parcelable {
+public class CheckModel extends RealmObject implements Parcelable {
     public String companyNo;  //公司编号
     public String checkId;    //盘点单id
     public String sheetNo;    //单号
     public String shopName;    //门店
     public String storeName;    //盘点柜台
     public String storeId;    //柜台id(多个以逗号分隔开)
-    public String checkNum;    //实盘数量
+    public String checkNum = "0";    //实盘数量
     public int sheetStatus;  //1：进行中；2：正在生产盘点结果数据;3:已结束
     public String createTime;   //创建时间
 

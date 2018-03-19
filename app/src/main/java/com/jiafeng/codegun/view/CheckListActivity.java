@@ -19,6 +19,8 @@ import com.jiafeng.codegun.adapter.CheckAdapter;
 import com.jiafeng.codegun.adapter.CheckModel;
 import com.jiafeng.codegun.adapter.MyDividerItemDecoration;
 import com.jiafeng.codegun.adapter.SpaceDivider;
+import com.jiafeng.codegun.base.BaseApplication;
+import com.jiafeng.codegun.base.RealmOperationHelper;
 import com.jiafeng.codegun.http.BaseRetrofit;
 import com.jiafeng.codegun.http.HttpPostService;
 import com.jiafeng.codegun.http.RetrofitEntity;
@@ -28,11 +30,15 @@ import com.melnykov.fab.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.RealmChangeListener;
+import io.realm.RealmResults;
 import retrofit2.Retrofit;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+
+import static com.jiafeng.codegun.base.RealmOperationHelper.*;
 
 public class CheckListActivity extends AppCompatActivity {
     RecyclerView mRecyclerView;
@@ -49,8 +55,8 @@ public class CheckListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_check_list);
 
         initView();
-
         initData();
+        initAdapterData();
     }
 
     private void initData() {
@@ -77,6 +83,7 @@ public class CheckListActivity extends AppCompatActivity {
                 models.remove(position);
                 mAdapter.setModels(models);
                 mAdapter.notifyDataSetChanged();
+                RealmOperationHelper.getInstance(BaseApplication.REALM_INSTANCE).deleteElement(CheckModel.class,position);
             }
         });
 
@@ -90,7 +97,6 @@ public class CheckListActivity extends AppCompatActivity {
         quitTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 new AlertDialog.Builder(
                         CheckListActivity.this)
                         .setTitle("温馨提示")
@@ -135,6 +141,32 @@ public class CheckListActivity extends AppCompatActivity {
             data.add(model);
         }
         return data;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mAdapter != null) {
+            initAdapterData();
+        }
+    }
+
+    public void initAdapterData() {
+        final RealmResults<CheckModel> results = (RealmResults<CheckModel>) getInstance(BaseApplication.REALM_INSTANCE).queryAllAsync(CheckModel.class);
+        results.addChangeListener(new RealmChangeListener<RealmResults<CheckModel>>() {
+            @Override
+            public void onChange(RealmResults<CheckModel> element) {
+                //只要results改变就会回调，及时取消监听
+                results.removeAllChangeListeners();
+                //获取数据，更新UI。
+                models.clear();
+                for (CheckModel model : element) {
+                    models.add(model);
+                }
+                mAdapter.setModels(models);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     @Override

@@ -22,6 +22,8 @@ import com.jiafeng.codegun.R;
 import com.jiafeng.codegun.adapter.CheckModel;
 import com.jiafeng.codegun.adapter.EPCadapter;
 import com.jiafeng.codegun.adapter.EpcDataModel;
+import com.jiafeng.codegun.base.BaseApplication;
+import com.jiafeng.codegun.base.RealmOperationHelper;
 import com.jiafeng.codegun.customzie.seekbar.BubbleSeekBar;
 import com.jiafeng.codegun.util.SoundManage;
 import com.jiafeng.codegun.util.StringUtils;
@@ -105,16 +107,14 @@ public class ChengWeiScanActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                stopInventory();
-                finish();
+                saveData();
             }
         });
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                stopInventory();
-                finish();
+                saveData();
             }
         });
 
@@ -133,6 +133,13 @@ public class ChengWeiScanActivity extends AppCompatActivity {
                 addEPCToList(strs[0], strs[1], strs[2]);
             }
         };
+    }
+
+    public void saveData() {
+        stopInventory();
+        model.checkNum = listEpc.size() + "";
+        RealmOperationHelper.getInstance(BaseApplication.REALM_INSTANCE).add(model);
+        finish();
     }
 
     private void initView() {
@@ -158,7 +165,7 @@ public class ChengWeiScanActivity extends AppCompatActivity {
             public void getProgressOnActionUp(int progress, float progressFloat) {
                 if (mReader != null) {
                     if (mReader.setPower(progress)) {
-                        Toast.makeText(ChengWeiScanActivity.this, "范围设置成功"+mReader.getPower(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ChengWeiScanActivity.this, "范围设置成功" + mReader.getPower(), Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(ChengWeiScanActivity.this, "范围设置失败", Toast.LENGTH_SHORT).show();
                     }
