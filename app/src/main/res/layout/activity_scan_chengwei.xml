@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -148,17 +149,17 @@
                 android:textColor="@color/color_gray_333333"
                 android:textSize="15sp" />
 
-            <SeekBar
-                android:id="@+id/seekbar"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toEndOf="@+id/tv"
-                android:progressDrawable="@drawable/seekbar_style"
-                android:thumb="@drawable/thumb_bg"
-                android:maxHeight="10dp"
-                android:max="30"
-                android:progress="30" />
+           <com.jiafeng.codegun.customzie.seekbar.BubbleSeekBar
+               android:id="@+id/seekbar"
+               android:layout_width="200dp"
+               android:layout_height="22dp"
+               android:layout_centerVertical="true"
+               android:layout_toEndOf="@+id/tv"
+               app:bsb_second_track_color="@color/text_color"
+               app:bsb_track_color="@color/ededed"
+               app:bsb_max="30"
+               app:bsb_min="5.0"
+               app:bsb_progress="30.0" />
 
             <TextView
                 android:id="@+id/nameTv"

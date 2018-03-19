@@ -10,14 +10,11 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,8 +22,7 @@ import com.jiafeng.codegun.R;
 import com.jiafeng.codegun.adapter.CheckModel;
 import com.jiafeng.codegun.adapter.EPCadapter;
 import com.jiafeng.codegun.adapter.EpcDataModel;
-import com.jiafeng.codegun.customzie.multiselect.model.StoreModel;
-import com.jiafeng.codegun.customzie.multiselect.widget.MultiSelectPopupWindows;
+import com.jiafeng.codegun.customzie.seekbar.BubbleSeekBar;
 import com.jiafeng.codegun.util.SoundManage;
 import com.jiafeng.codegun.util.StringUtils;
 import com.rscja.deviceapi.RFIDWithUHF;
@@ -53,7 +49,7 @@ public class ChengWeiScanActivity extends AppCompatActivity {
     Button startBtn;
     Button saveBtn;
     ListView LvTags;
-    SeekBar seekbar;
+    BubbleSeekBar seekbar;
     TextView nameTv;
 
     static String NEW_CHECK_MODEL = "new_check_model";
@@ -79,6 +75,7 @@ public class ChengWeiScanActivity extends AppCompatActivity {
         tagList = new ArrayList<HashMap<String, String>>();
         listEpc = new ArrayList<EpcDataModel>();
 
+        adapter = new EPCadapter(ChengWeiScanActivity.this, listEpc);
         try {
             mReader = RFIDWithUHF.getInstance();
         } catch (Exception ex) {
@@ -99,7 +96,7 @@ public class ChengWeiScanActivity extends AppCompatActivity {
         shopName.setText(model.shopName);
         storeName.setText(model.storeName);
 
-       // mReader.setPower(value);
+        mReader.setPower(value);
 
         if (model.checkNum != null) {
             tagSum.setText(model.checkNum);
@@ -131,13 +128,11 @@ public class ChengWeiScanActivity extends AppCompatActivity {
         handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                String result = msg.obj + "";
+                String result = msg.obj.toString();
                 String[] strs = result.split("@");
                 addEPCToList(strs[0], strs[1], strs[2]);
             }
         };
-
-
     }
 
     private void initView() {
@@ -153,28 +148,26 @@ public class ChengWeiScanActivity extends AppCompatActivity {
         seekbar = findViewById(R.id.seekbar);
         nameTv = findViewById(R.id.nameTv);
 
-
-        seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        seekbar.setOnProgressChangedListener(new BubbleSeekBar.OnProgressChangedListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                nameTv.setText(String.valueOf(i));
-                value = i;
+            public void onProgressChanged(int progress, float progressFloat) {
+                nameTv.setText(String.valueOf(progress));
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                if (mReader != null && value > 10) {
-                    if (mReader.setPower(value)) {
-                        Toast.makeText(ChengWeiScanActivity.this,"范围设置成功",Toast.LENGTH_SHORT).show();
+            public void getProgressOnActionUp(int progress, float progressFloat) {
+                if (mReader != null) {
+                    if (mReader.setPower(progress)) {
+                        Toast.makeText(ChengWeiScanActivity.this, "范围设置成功"+mReader.getPower(), Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(ChengWeiScanActivity.this,"范围设置失败",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ChengWeiScanActivity.this, "范围设置失败", Toast.LENGTH_SHORT).show();
                     }
                 }
+            }
+
+            @Override
+            public void getProgressOnFinally(int progress, float progressFloat) {
+
             }
         });
     }
@@ -182,13 +175,12 @@ public class ChengWeiScanActivity extends AppCompatActivity {
     private void readTag() {
         // 识别标签
         if (startBtn.getText().equals(getString(R.string.btInventory)) && mReader.openInventoryEPCAndTIDMode()) {
-            if (mReader.startInventoryTag((byte) 0, (byte) 0)) {
+            if (mReader.startInventoryTag((byte) 0, (byte) 0, 4)) {
                 startBtn.setText(getString(R.string.title_stop_Inventory));
                 loopFlag = true;
-                new TagThread(10).start();
+                new TagThread(0).start();
             } else {
                 mReader.stopInventory();
-//                UIHelper.ToastMessage(mContext,R.string.uhf_msg_inventory_open_fail); mContext.playSound(2);
             }
         } else {
             stopInventory();
@@ -200,9 +192,9 @@ public class ChengWeiScanActivity extends AppCompatActivity {
      */
     private void stopInventory() {
         if (loopFlag) {
-            loopFlag = false;
             if (mReader.stopInventory()) {
                 startBtn.setText(getString(R.string.btInventory));
+                loopFlag = false;
             } else {
 //                UIHelper.ToastMessage(mContext,R.string.uhf_msg_inventory_stop_fail);
             }
@@ -225,7 +217,6 @@ public class ChengWeiScanActivity extends AppCompatActivity {
 
             if (index == -1) {
                 tagList.add(map);
-//                LvTags.setAdapter(adapter);
                 SoundManage.PlaySound(getBaseContext(), SoundManage.SoundType.SUCCESS);
 
                 EpcDataModel epcTag = new EpcDataModel();
@@ -234,7 +225,6 @@ public class ChengWeiScanActivity extends AppCompatActivity {
                 epcTag.setCount(1);
                 epcTag.setTid(tid);
                 listEpc.add(epcTag);
-                adapter = new EPCadapter(ChengWeiScanActivity.this, listEpc);
                 LvTags.setAdapter(adapter);
 
                 tagSum.setText("" + adapter.getCount());
@@ -261,10 +251,9 @@ public class ChengWeiScanActivity extends AppCompatActivity {
         }
 
         String tempStr = "";
+        HashMap<String, String> temp;
         for (int i = 0; i < tagList.size(); i++) {
-            HashMap<String, String> temp = new HashMap<String, String>();
             temp = tagList.get(i);
-
             tempStr = temp.get("tagUii");
             if (strEPC.equals(tempStr)) {
                 existFlag = i;
@@ -288,31 +277,34 @@ public class ChengWeiScanActivity extends AppCompatActivity {
             String strResult;
 
             String[] res = null;
+            Message msg = null;
+            StringBuilder tempData = new StringBuilder(256);
 
             while (loopFlag) {
-                res = mReader.readTagFromBuffer();//.readTagFormBuffer();
-
+                res = mReader.readTagFromBuffer();
                 if (res != null) {
-                    strTid = res[0];
-                    if (!strTid.equals("0000000000000000") && !strTid.equals("000000000000000000000000") && StringUtils.isNotEmpty(strTid)) {
-                        strResult = "TID:" + strTid + "\n";
-                    } else {
-                        strResult = "";
+                    if (tempData.length() > 0) {
+                        tempData.delete(0, tempData.length());
                     }
-                    Message msg = handler.obtainMessage();
-                    msg.obj = strResult + "@" + "EPC:"
-                            + mReader.convertUiiToEPC(res[1]) + "@"
-                            + res[2];
-                    handler.sendMessage(msg);
-                    // SoundManage.PlaySound(getBaseContext(), SoundManage.SoundType.SUCCESS);
-                }
-                try {
-                    sleep(mBetween);
-                } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+                    strTid = res[0];
+                    if (StringUtils.isNotEmpty(strTid) && strTid.length() != 0 && !strTid.equals("0000000000000000") && !strTid.equals("000000000000000000000000")) {
+                        // strResult = "TID:" + strTid + "\n";
+                        tempData.append("TID:");//
+                        tempData.append(strTid);
+                        tempData.append("\n");
+                    } else {
+                        strResult = "";//
+                        // tempData.append("");//
+                    }
+                    tempData.append("@EPC:");
+                    tempData.append(mReader.convertUiiToEPC(res[1]));
+                    tempData.append("@");
+                    tempData.append(res[2]);
 
+                    msg = handler.obtainMessage();
+                    msg.obj = tempData.toString();// strResult + "EPC:" + mContext.mReader.convertUiiToEPC(res[1]) + "@" + res[2];
+                    handler.sendMessage(msg);
+                }
             }
         }
     }

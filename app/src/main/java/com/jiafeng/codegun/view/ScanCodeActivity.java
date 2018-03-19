@@ -77,7 +77,7 @@ public class ScanCodeActivity extends AppCompatActivity {
                 mUhfrManager.setRegion(Reader.Region_Conf.valueOf(1));
         }
 
-        Util.initSoundPool(this);//Init sound pool
+       // Util.initSoundPool(this);//Init sound pool
 
         initView();
         initData();
@@ -241,7 +241,7 @@ public class ScanCodeActivity extends AppCompatActivity {
                         listEpc.add(epcTag);
                         adapter = new EPCadapter(ScanCodeActivity.this, listEpc);
                         lvEpc.setAdapter(adapter);
-                        Util.play(1, 0);
+                       // Util.play(1, 0);
                         //mSetEpcs = epcSet;
                     } else {
                         if (epcSet.contains(epc)) {//set already exit
@@ -263,7 +263,7 @@ public class ScanCodeActivity extends AppCompatActivity {
 
                             if (System.currentTimeMillis() - lastTime > 100) {
                                 lastTime = System.currentTimeMillis();
-                                Util.play(1, 0);
+                                //Util.play(1, 0);
                             }
                         }
 
