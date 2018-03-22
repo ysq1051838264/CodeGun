@@ -1,4 +1,4 @@
-package com.jiafeng.codegun.adapter;
+package com.jiafeng.codegun.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -14,7 +14,7 @@ import io.realm.RealmObject;
  */
 public class CheckModel extends RealmObject implements Parcelable {
     public String companyNo;  //公司编号
-    public String checkId;    //盘点单id
+    public String id;    //盘点单id
     public String sheetNo;    //单号
     public String shopName;    //门店
     public String storeName;    //盘点柜台
@@ -39,7 +39,7 @@ public class CheckModel extends RealmObject implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.companyNo);
-        dest.writeString(this.checkId);
+        dest.writeString(this.id);
         dest.writeString(this.sheetNo);
         dest.writeString(this.shopName);
         dest.writeString(this.storeName);
@@ -51,7 +51,7 @@ public class CheckModel extends RealmObject implements Parcelable {
 
     protected CheckModel(Parcel in) {
         this.companyNo = in.readString();
-        this.checkId = in.readString();
+        this.id = in.readString();
         this.sheetNo = in.readString();
         this.shopName = in.readString();
         this.storeName = in.readString();

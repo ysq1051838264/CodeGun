@@ -1,10 +1,14 @@
-package com.jiafeng.codegun.adapter;
+package com.jiafeng.codegun.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
  * Created by yangshuquan on 2018/3/2.
+ */
+
+/**
+ * 已经舍弃   3-22
  */
 
 public class ShopModel implements Parcelable {

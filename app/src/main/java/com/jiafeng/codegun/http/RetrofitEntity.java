@@ -1,7 +1,5 @@
 package com.jiafeng.codegun.http;
 
-import java.util.List;
-
 /**
  * 直接请求返回数据格式
  * Created by WZG on 2016/7/16.
@@ -9,7 +7,7 @@ import java.util.List;
 public class RetrofitEntity {
     private int ret;
     private String msg;
-    private List<SubjectResulte> data;
+    private SubjectResulte areaInfo;
 
     public int getRet() {
         return ret;
@@ -27,11 +25,12 @@ public class RetrofitEntity {
         this.msg = msg;
     }
 
-    public List<SubjectResulte> getData() {
-        return data;
+
+    public SubjectResulte getAreaInfo() {
+        return areaInfo;
     }
 
-    public void setData(List<SubjectResulte> data) {
-        this.data = data;
+    public void setAreaInfo(SubjectResulte areaInfo) {
+        this.areaInfo = areaInfo;
     }
 }

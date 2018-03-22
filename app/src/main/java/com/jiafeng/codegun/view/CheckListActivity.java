@@ -16,19 +16,17 @@ import android.widget.Toast;
 
 import com.jiafeng.codegun.R;
 import com.jiafeng.codegun.adapter.CheckAdapter;
-import com.jiafeng.codegun.adapter.CheckModel;
-import com.jiafeng.codegun.adapter.MyDividerItemDecoration;
+import com.jiafeng.codegun.model.CheckModel;
 import com.jiafeng.codegun.adapter.SpaceDivider;
 import com.jiafeng.codegun.base.BaseApplication;
 import com.jiafeng.codegun.base.RealmOperationHelper;
 import com.jiafeng.codegun.http.BaseRetrofit;
 import com.jiafeng.codegun.http.HttpPostService;
 import com.jiafeng.codegun.http.RetrofitEntity;
-import com.jiafeng.codegun.util.Util;
-import com.melnykov.fab.FloatingActionButton;
+import com.jiafeng.codegun.model.StoreList;
+import com.jiafeng.codegun.util.ShareHelper;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
@@ -38,8 +36,6 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-import static com.jiafeng.codegun.base.RealmOperationHelper.*;
-
 public class CheckListActivity extends AppCompatActivity {
     RecyclerView mRecyclerView;
     TextView createTv;
@@ -48,6 +44,7 @@ public class CheckListActivity extends AppCompatActivity {
     ArrayList<CheckModel> models = new ArrayList<>();
 
     long exitTime = 0L;
+    Retrofit retrofit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,10 +60,13 @@ public class CheckListActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.addItemDecoration(new SpaceDivider(60));
 
-        models = getData();
         mAdapter = new CheckAdapter(models);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addOnItemTouchListener(mAdapter.getSwipeOnItemListener());
+
+        retrofit = BaseRetrofit.getInstance();
+        final ProgressDialog pd = new ProgressDialog(this);
+        final HttpPostService apiService = retrofit.create(HttpPostService.class);
 
         mAdapter.setOnItemClickListener(new CheckAdapter.OnItemClickListener() {
             @Override
@@ -79,11 +79,44 @@ public class CheckListActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onItemDelete(int position) {
-                models.remove(position);
-                mAdapter.setModels(models);
-                mAdapter.notifyDataSetChanged();
-                RealmOperationHelper.getInstance(BaseApplication.REALM_INSTANCE).deleteElement(CheckModel.class,position);
+            public void onItemDelete(final int position) {
+                Observable<StoreList> observable = apiService.deleteGoodsCheck(models.get(position).companyNo,
+                        models.get(position).sheetNo, models.get(position).id);
+                observable.subscribeOn(Schedulers.io())
+                        .unsubscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Subscriber<StoreList>() {
+                                       @Override
+                                       public void onCompleted() {
+                                           if (pd != null && pd.isShowing()) {
+                                               pd.dismiss();
+                                           }
+                                       }
+
+                                       @Override
+                                       public void onError(Throwable e) {
+                                           if (pd != null && pd.isShowing()) {
+                                               pd.dismiss();
+                                           }
+                                       }
+
+                                       @Override
+                                       public void onNext(StoreList storeList) {
+                                           models.remove(position);
+                                           mAdapter.setModels(models);
+                                           mAdapter.notifyDataSetChanged();
+                                           RealmOperationHelper.getInstance(BaseApplication.REALM_INSTANCE).deleteElement(CheckModel.class, position);
+                                       }
+
+                                       @Override
+                                       public void onStart() {
+                                           super.onStart();
+                                           pd.show();
+                                       }
+                                   }
+                        );
+
+
             }
         });
 
@@ -103,6 +136,8 @@ public class CheckListActivity extends AppCompatActivity {
                         .setMessage("确定要注销吗？")
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
+                                ShareHelper.getInstance().clearData();
+                                RealmOperationHelper.getInstance(BaseApplication.REALM_INSTANCE).deleteAll(CheckModel.class);
                                 finish();
                                 System.exit(0);
                             }
@@ -110,37 +145,53 @@ public class CheckListActivity extends AppCompatActivity {
                         .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-
                             }
                         })
                         .show();
             }
         });
+
+        String sn = ShareHelper.getInstance().getString(ShareHelper.KEY_SN, null);
+
+        Observable<StoreList> observable = apiService.getGoodsCheckList(sn);
+        observable.subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<StoreList>() {
+                               @Override
+                               public void onCompleted() {
+                                   if (pd != null && pd.isShowing()) {
+                                       pd.dismiss();
+                                   }
+                               }
+
+                               @Override
+                               public void onError(Throwable e) {
+                                   if (pd != null && pd.isShowing()) {
+                                       pd.dismiss();
+                                   }
+                               }
+
+                               @Override
+                               public void onNext(StoreList storeList) {
+                                   models = (ArrayList<CheckModel>) storeList.getData();
+                                   mAdapter.setModels(models);
+                                   mAdapter.notifyDataSetChanged();
+                               }
+
+                               @Override
+                               public void onStart() {
+                                   super.onStart();
+                                   pd.show();
+                               }
+                           }
+                );
     }
 
     private void initView() {
         mRecyclerView = findViewById(R.id.recyclerView);
         quitTv = findViewById(R.id.quitTv);
         createTv = findViewById(R.id.createTv);
-    }
-
-    private ArrayList<CheckModel> getData() {
-        ArrayList<CheckModel> data = new ArrayList<>();
-
-        for (int i = 0; i < 3; i++) {
-            CheckModel model = new CheckModel();
-            model.checkNum = "1" + i;
-            model.shopName = "佳峰集团" + i;
-            model.createTime = "14:11";
-            model.sheetNo = "1111111" + i;
-            model.storeName = i + "2柜台";
-            if (i % 4 == 0)
-                model.sheetStatus = 2;
-            else
-                model.sheetStatus = 1;
-            data.add(model);
-        }
-        return data;
     }
 
     @Override
@@ -152,7 +203,7 @@ public class CheckListActivity extends AppCompatActivity {
     }
 
     public void initAdapterData() {
-        final RealmResults<CheckModel> results = (RealmResults<CheckModel>) getInstance(BaseApplication.REALM_INSTANCE).queryAllAsync(CheckModel.class);
+        final RealmResults<CheckModel> results = (RealmResults<CheckModel>) RealmOperationHelper.getInstance(BaseApplication.REALM_INSTANCE).queryAllAsync(CheckModel.class);
         results.addChangeListener(new RealmChangeListener<RealmResults<CheckModel>>() {
             @Override
             public void onChange(RealmResults<CheckModel> element) {
@@ -185,43 +236,4 @@ public class CheckListActivity extends AppCompatActivity {
         return super.onKeyDown(keyCode, event);
     }
 
-    public void getListData() {
-        Retrofit retrofit = BaseRetrofit.getInstance();
-
-        final ProgressDialog pd = new ProgressDialog(this);
-        HttpPostService apiService = retrofit.create(HttpPostService.class);
-        Observable<RetrofitEntity> observable = apiService.getAllVedioBy(true);
-        observable.subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        new Subscriber<RetrofitEntity>() {
-                            @Override
-                            public void onCompleted() {
-                                if (pd != null && pd.isShowing()) {
-                                    pd.dismiss();
-                                }
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-                                if (pd != null && pd.isShowing()) {
-                                    pd.dismiss();
-                                }
-                            }
-
-                            @Override
-                            public void onNext(RetrofitEntity retrofitEntity) {
-                                Log.e("ysq", retrofitEntity.getData().toString());
-                            }
-
-                            @Override
-                            public void onStart() {
-                                super.onStart();
-                                pd.show();
-                            }
-                        }
-
-                );
-    }
 }

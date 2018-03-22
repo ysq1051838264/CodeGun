@@ -1,7 +1,6 @@
 package com.jiafeng.codegun.adapter;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,11 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jiafeng.codegun.R;
+import com.jiafeng.codegun.model.CheckModel;
 import com.jiafeng.codegun.swipeitemview.SwipeItemView;
 import com.jiafeng.codegun.swipeitemview.SwipeOnItemListener;
-import com.jiafeng.codegun.view.MainActivity;
-import com.jiafeng.codegun.view.ScanCodeActivity;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 

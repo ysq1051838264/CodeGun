@@ -10,15 +10,12 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.github.dfqin.grantor.PermissionListener;
 import com.github.dfqin.grantor.PermissionsUtil;
 import com.jiafeng.codegun.R;
-import com.jiafeng.codegun.adapter.CheckModel;
 import com.jiafeng.codegun.http.BaseRetrofit;
 import com.jiafeng.codegun.http.HttpPostService;
 import com.jiafeng.codegun.http.RetrofitEntity;
@@ -87,50 +84,51 @@ public class LoginActivity extends AppCompatActivity {
         ShareHelper shareHelper = ShareHelper.initInstance(this);
         shareHelper.setString(ShareHelper.KEY_IMEI, imei);
         shareHelper.setString(ShareHelper.KEY_MAC, mac);
+        shareHelper.setString(ShareHelper.KEY_SN, sn);
 
-        startActivity(new Intent(LoginActivity.this, CheckListActivity.class));
-        finish();
+//        startActivity(new Intent(LoginActivity.this, CheckListActivity.class));
+//        finish();
 
-//        Retrofit retrofit =  BaseRetrofit.getInstance();
-//
-//        final ProgressDialog pd = new ProgressDialog(this);
-//        HttpPostService apiService = retrofit.create(HttpPostService.class);
-//        Observable<RetrofitEntity> observable = apiService.getAllVedioBy(true);
-//        observable.subscribeOn(Schedulers.io())
-//                .unsubscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(
-//                        new Subscriber<RetrofitEntity>() {
-//                            @Override
-//                            public void onCompleted() {
-//                                if (pd != null && pd.isShowing()) {
-//                                    pd.dismiss();
-//                                }
-//
-//                                startActivity(new Intent(LoginActivity.this, CheckListActivity.class));
-//                                finish();
-//                            }
-//
-//                            @Override
-//                            public void onError(Throwable e) {
-//                                if (pd != null && pd.isShowing()) {
-//                                    pd.dismiss();
-//                                }
-//                            }
-//
-//                            @Override
-//                            public void onNext(RetrofitEntity retrofitEntity) {
-//                                Log.e("ysq",retrofitEntity.getData().toString());
-//                            }
-//
-//                            @Override
-//                            public void onStart() {
-//                                super.onStart();
-//                                pd.show();
-//                            }
-//                        }
-//
-//                );
+        Retrofit retrofit =  BaseRetrofit.getInstance();
+
+        final ProgressDialog pd = new ProgressDialog(this);
+        HttpPostService apiService = retrofit.create(HttpPostService.class);
+        Observable<RetrofitEntity> observable = apiService.checkDeviceInfo(sn);
+        observable.subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<RetrofitEntity>() {
+                            @Override
+                            public void onCompleted() {
+                                if (pd != null && pd.isShowing()) {
+                                    pd.dismiss();
+                                }
+
+                                startActivity(new Intent(LoginActivity.this, CheckListActivity.class));
+                                finish();
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                if (pd != null && pd.isShowing()) {
+                                    pd.dismiss();
+                                }
+                            }
+
+                            @Override
+                            public void onNext(RetrofitEntity retrofitEntity) {
+                                ShareHelper shareHelper = ShareHelper.initInstance(LoginActivity.this);
+                                shareHelper.setString(ShareHelper.KEY_COMPANY_NO, retrofitEntity.getAreaInfo().getCompanyNo());
+                            }
+
+                            @Override
+                            public void onStart() {
+                                super.onStart();
+                                pd.show();
+                            }
+                        }
+
+                );
     }
 
 

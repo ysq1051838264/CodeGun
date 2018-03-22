@@ -1,29 +1,14 @@
-package com.jiafeng.codegun.customzie.multiselect.model;
+package com.jiafeng.codegun.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-/**
- * Created by HZF on 2017/5/16.
- */
-
 public class StoreModel implements Parcelable {
 
     private String storeName;
-    private boolean isChecked;
+    private boolean isChecked = false;
     private String areaCode;
     private String id;
-
-    public StoreModel(String storeName, boolean isChecked) {
-        this.storeName = storeName;
-        this.isChecked = isChecked;
-    }
-
-    public StoreModel(String storeName, boolean isChecked, String id) {
-        this.storeName = storeName;
-        this.isChecked = isChecked;
-        this.id = id;
-    }
 
     public boolean isChecked() {
         return isChecked;

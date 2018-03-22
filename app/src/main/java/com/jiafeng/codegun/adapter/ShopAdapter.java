@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jiafeng.codegun.R;
+import com.jiafeng.codegun.model.ShopModel;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 

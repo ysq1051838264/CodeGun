@@ -19,7 +19,7 @@ import android.widget.Toast;
 import com.jiafeng.codegun.adapter.MyDividerItemDecoration;
 import com.jiafeng.codegun.R;
 import com.jiafeng.codegun.adapter.ShopAdapter;
-import com.jiafeng.codegun.adapter.ShopModel;
+import com.jiafeng.codegun.model.ShopModel;
 import com.jiafeng.codegun.util.OkManager;
 
 import java.io.IOException;

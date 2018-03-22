@@ -1,4 +1,4 @@
-package com.jiafeng.codegun.adapter;
+package com.jiafeng.codegun.model;
 
 
 public class EpcDataModel {

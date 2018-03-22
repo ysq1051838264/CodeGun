@@ -5,37 +5,40 @@ package com.jiafeng.codegun.http;
  * Created by WZG on 2016/7/16.
  */
 public class SubjectResulte {
-    private int id;
-    private String name;
-    private String title;
+    private String companyNo;
+    private String shopName;
+    private String shopId;
+    private String companyName;
 
-    @Override
-    public String toString() {
-        return "name->"+name+"\n";
-
+    public String getCompanyNo() {
+        return companyNo;
     }
 
-    public int getId() {
-        return id;
+    public void setCompanyNo(String companyNo) {
+        this.companyNo = companyNo;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public String getShopName() {
+        return shopName;
     }
 
-    public String getName() {
-        return name;
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getShopId() {
+        return shopId;
     }
 
-    public String getTitle() {
-        return title;
+    public void setShopId(String shopId) {
+        this.shopId = shopId;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 }

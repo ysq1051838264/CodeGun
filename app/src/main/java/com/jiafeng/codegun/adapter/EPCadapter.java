@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.jiafeng.codegun.R;
+import com.jiafeng.codegun.model.EpcDataModel;
 
 import java.util.List;
 

@@ -13,7 +13,7 @@ import android.widget.PopupWindow;
 
 import com.jiafeng.codegun.R;
 import com.jiafeng.codegun.customzie.multiselect.adapter.SearchPopupWindowsAdapter;
-import com.jiafeng.codegun.customzie.multiselect.model.StoreModel;
+import com.jiafeng.codegun.model.StoreModel;
 import com.jiafeng.codegun.customzie.multiselect.utils.DensityUtil;
 
 import java.util.List;

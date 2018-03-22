@@ -10,7 +10,6 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -19,12 +18,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jiafeng.codegun.R;
-import com.jiafeng.codegun.adapter.CheckModel;
+import com.jiafeng.codegun.model.CheckModel;
 import com.jiafeng.codegun.adapter.EPCadapter;
-import com.jiafeng.codegun.adapter.EpcDataModel;
+import com.jiafeng.codegun.model.EpcDataModel;
 import com.jiafeng.codegun.base.BaseApplication;
 import com.jiafeng.codegun.base.RealmOperationHelper;
 import com.jiafeng.codegun.customzie.seekbar.BubbleSeekBar;
+import com.jiafeng.codegun.http.BaseRetrofit;
+import com.jiafeng.codegun.http.HttpPostService;
+import com.jiafeng.codegun.model.StoreList;
 import com.jiafeng.codegun.util.SoundManage;
 import com.jiafeng.codegun.util.StringUtils;
 import com.rscja.deviceapi.RFIDWithUHF;
@@ -32,6 +34,12 @@ import com.rscja.deviceapi.RFIDWithUHF;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import retrofit2.Retrofit;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by yangshuquan on 2018/3/8.
@@ -138,8 +146,43 @@ public class ChengWeiScanActivity extends AppCompatActivity {
     public void saveData() {
         stopInventory();
         model.checkNum = listEpc.size() + "";
-        RealmOperationHelper.getInstance(BaseApplication.REALM_INSTANCE).add(model);
-        finish();
+
+        Retrofit retrofit = BaseRetrofit.getInstance();
+        final ProgressDialog pd = new ProgressDialog(this);
+        HttpPostService apiService = retrofit.create(HttpPostService.class);
+        Observable<StoreList> observable = apiService.getAssistInfo("", "");
+        observable.subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<StoreList>() {
+                               @Override
+                               public void onCompleted() {
+                                   if (pd != null && pd.isShowing()) {
+                                       pd.dismiss();
+                                   }
+
+                               }
+
+                               @Override
+                               public void onError(Throwable e) {
+                                   if (pd != null && pd.isShowing()) {
+                                       pd.dismiss();
+                                   }
+                               }
+
+                               @Override
+                               public void onNext(StoreList s) {
+                                   RealmOperationHelper.getInstance(BaseApplication.REALM_INSTANCE).add(model);
+                                   finish();
+                               }
+
+                               @Override
+                               public void onStart() {
+                                   super.onStart();
+                                   pd.show();
+                               }
+                           }
+                );
     }
 
     private void initView() {

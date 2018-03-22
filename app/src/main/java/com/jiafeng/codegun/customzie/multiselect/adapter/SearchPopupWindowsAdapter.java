@@ -8,7 +8,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jiafeng.codegun.R;
-import com.jiafeng.codegun.customzie.multiselect.model.StoreModel;
+import com.jiafeng.codegun.model.StoreModel;
 
 
 /**

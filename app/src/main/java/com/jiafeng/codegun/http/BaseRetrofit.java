@@ -14,10 +14,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class BaseRetrofit {
 
     public static Retrofit getInstance() {
-        String BASE_URL = "http://www.izaodao.com/Api/";
+        String BASE_URL = Api.baseUrl;
         //手动创建一个OkHttpClient并设置超时时间
         okhttp3.OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.connectTimeout(5, TimeUnit.SECONDS);
+
+        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        builder.addInterceptor(httpLoggingInterceptor);
+
+        builder.connectTimeout(10, TimeUnit.SECONDS);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .client(builder.build())

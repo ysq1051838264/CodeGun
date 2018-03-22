@@ -11,6 +11,8 @@ public class ShareHelper {
     public static final String CONFIG_SP_NAME = "code_gun";
     public static final String KEY_MAC = "key_mac";
     public static final String KEY_IMEI = "key_imei";
+    public static final String KEY_SN = "key_sn";
+    public static final String KEY_COMPANY_NO = "key_company_no";
     private SharedPreferences configSp;
 
     private static ShareHelper instance;
@@ -37,6 +39,12 @@ public class ShareHelper {
     public void setString(String key, String value) {
         SharedPreferences.Editor editor = getConfigEditor();
         editor.putString(key, value);
+        editor.apply();
+    }
+
+    public void clearData() {
+        SharedPreferences.Editor editor = getConfigEditor();
+        editor.clear();
         editor.apply();
     }
 

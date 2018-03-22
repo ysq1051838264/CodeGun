@@ -17,11 +17,10 @@ import android.widget.TextView;
 import com.BRMicro.Tools;
 import com.handheld.uhfr.UHFRManager;
 import com.jiafeng.codegun.R;
-import com.jiafeng.codegun.adapter.CheckModel;
+import com.jiafeng.codegun.model.CheckModel;
 import com.jiafeng.codegun.adapter.EPCadapter;
-import com.jiafeng.codegun.adapter.EpcDataModel;
+import com.jiafeng.codegun.model.EpcDataModel;
 import com.jiafeng.codegun.util.OkManager;
-import com.jiafeng.codegun.util.Util;
 import com.uhf.api.cls.Reader;
 
 import java.util.ArrayList;
