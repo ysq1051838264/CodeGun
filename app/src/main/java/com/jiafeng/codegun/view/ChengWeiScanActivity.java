@@ -27,6 +27,7 @@ import com.jiafeng.codegun.customzie.seekbar.BubbleSeekBar;
 import com.jiafeng.codegun.http.BaseRetrofit;
 import com.jiafeng.codegun.http.HttpPostService;
 import com.jiafeng.codegun.model.StoreList;
+import com.jiafeng.codegun.util.ShareHelper;
 import com.jiafeng.codegun.util.SoundManage;
 import com.jiafeng.codegun.util.StringUtils;
 import com.rscja.deviceapi.RFIDWithUHF;
@@ -115,7 +116,8 @@ public class ChengWeiScanActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                saveData();
+                save();
+                finish();
             }
         });
 
@@ -143,14 +145,21 @@ public class ChengWeiScanActivity extends AppCompatActivity {
         };
     }
 
-    public void saveData() {
+    public void save() {
         stopInventory();
         model.checkNum = listEpc.size() + "";
+        RealmOperationHelper.getInstance(BaseApplication.REALM_INSTANCE).add(model);
+    }
+
+    public void saveData() {
+        save();
+
+        String sn = ShareHelper.getInstance().getString(ShareHelper.KEY_SN, null);
 
         Retrofit retrofit = BaseRetrofit.getInstance();
         final ProgressDialog pd = new ProgressDialog(this);
         HttpPostService apiService = retrofit.create(HttpPostService.class);
-        Observable<StoreList> observable = apiService.getAssistInfo("", "");
+        Observable<StoreList> observable = apiService.submitGoodsCheck(model.companyNo, sn, "", model.sheetNo, "");
         observable.subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -172,7 +181,6 @@ public class ChengWeiScanActivity extends AppCompatActivity {
 
                                @Override
                                public void onNext(StoreList s) {
-                                   RealmOperationHelper.getInstance(BaseApplication.REALM_INSTANCE).add(model);
                                    finish();
                                }
 

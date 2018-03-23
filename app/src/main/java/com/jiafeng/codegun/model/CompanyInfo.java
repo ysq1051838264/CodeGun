@@ -1,10 +1,7 @@
-package com.jiafeng.codegun.http;
+package com.jiafeng.codegun.model;
 
-/**
- * 测试显示数据
- * Created by WZG on 2016/7/16.
- */
-public class SubjectResulte {
+
+public class CompanyInfo {
     private String companyNo;
     private String shopName;
     private String shopId;

@@ -8,15 +8,25 @@ import java.util.List;
 
 public class StoreList {
     List<StoreModel> storeInfo;
-    List<CheckModel> data;
+    List<CheckModel> goodscheck;
     ShopInfo shopInfo;
     SheetInfo sheetInfo;
+    CompanyInfo areaInfo;
     String timestamp;
     String msg;
     String ret;
 
+    public List<CheckModel> getGoodscheck() {
+        return goodscheck;
+    }
+
+    public void setGoodscheck(List<CheckModel> goodscheck) {
+        this.goodscheck = goodscheck;
+    }
+
+
     public Boolean isSuccess() {
-        return msg.equals("ok") && ret.equals("0");
+        return ret.equals("0");
     }
 
     public ShopInfo getShopInfo() {
@@ -67,11 +77,11 @@ public class StoreList {
         this.sheetInfo = sheetInfo;
     }
 
-    public List<CheckModel> getData() {
-        return data;
+    public CompanyInfo getAreaInfo() {
+        return areaInfo;
     }
 
-    public void setData(List<CheckModel> data) {
-        this.data = data;
+    public void setAreaInfo(CompanyInfo areaInfo) {
+        this.areaInfo = areaInfo;
     }
 }

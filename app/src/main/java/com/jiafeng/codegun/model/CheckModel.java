@@ -72,4 +72,76 @@ public class CheckModel extends RealmObject implements Parcelable {
             return new CheckModel[size];
         }
     };
+
+    public String getCompanyNo() {
+        return companyNo;
+    }
+
+    public void setCompanyNo(String companyNo) {
+        this.companyNo = companyNo;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getSheetNo() {
+        return sheetNo;
+    }
+
+    public void setSheetNo(String sheetNo) {
+        this.sheetNo = sheetNo;
+    }
+
+    public String getShopName() {
+        return shopName;
+    }
+
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
+    }
+
+    public String getStoreName() {
+        return storeName;
+    }
+
+    public void setStoreName(String storeName) {
+        this.storeName = storeName;
+    }
+
+    public String getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(String storeId) {
+        this.storeId = storeId;
+    }
+
+    public String getCheckNum() {
+        return checkNum;
+    }
+
+    public void setCheckNum(String checkNum) {
+        this.checkNum = checkNum;
+    }
+
+    public int getSheetStatus() {
+        return sheetStatus;
+    }
+
+    public void setSheetStatus(int sheetStatus) {
+        this.sheetStatus = sheetStatus;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
 }

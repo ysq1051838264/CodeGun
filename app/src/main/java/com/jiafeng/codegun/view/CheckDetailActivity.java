@@ -91,7 +91,7 @@ public class CheckDetailActivity extends AppCompatActivity {
         Retrofit retrofit = BaseRetrofit.getInstance();
         final ProgressDialog pd = new ProgressDialog(this);
         HttpPostService apiService = retrofit.create(HttpPostService.class);
-        Observable<StoreList> observable = apiService.getAssistInfo(model.companyNo, model.id);
+        Observable<StoreList> observable = apiService.getGoodsCheckDtl(model.companyNo, model.id);
         observable.subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

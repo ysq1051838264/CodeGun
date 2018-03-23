@@ -1,5 +1,7 @@
 package com.jiafeng.codegun.http;
 
+import com.jiafeng.codegun.model.CompanyInfo;
+
 /**
  * 直接请求返回数据格式
  * Created by WZG on 2016/7/16.
@@ -7,7 +9,12 @@ package com.jiafeng.codegun.http;
 public class RetrofitEntity {
     private int ret;
     private String msg;
-    private SubjectResulte areaInfo;
+
+    public CompanyInfo getAreaInfo() {
+        return areaInfo;
+    }
+
+    private CompanyInfo areaInfo;
 
     public int getRet() {
         return ret;
@@ -25,12 +32,7 @@ public class RetrofitEntity {
         this.msg = msg;
     }
 
-
-    public SubjectResulte getAreaInfo() {
-        return areaInfo;
-    }
-
-    public void setAreaInfo(SubjectResulte areaInfo) {
+    public void setAreaInfo(CompanyInfo areaInfo) {
         this.areaInfo = areaInfo;
     }
 }

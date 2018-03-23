@@ -8,13 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.jiafeng.codegun.R;
 import com.jiafeng.codegun.model.CheckModel;
 import com.jiafeng.codegun.swipeitemview.SwipeItemView;
 import com.jiafeng.codegun.swipeitemview.SwipeOnItemListener;
+import com.jiafeng.codegun.util.DateUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by yangshuquan on 2018/3/2.
@@ -97,7 +98,10 @@ public class CheckAdapter extends RecyclerView.Adapter<CheckAdapter.ViewHolder> 
 
         holder.shopName.setText(mData.get(position).shopName);
         holder.checkNum.setText(mData.get(position).checkNum);
-        holder.time.setText(mData.get(position).createTime);
+
+        Date date = DateUtils.stringToDate(mData.get(position).createTime, DateUtils.FORMAT_LONG);
+        holder.time.setText(DateUtils.dateToHourMinString(date));
+        holder.timeData.setText(DateUtils.dateToString(date));
         holder.checkStatus.setImageResource(mData.get(position).isCompile() ? R.drawable.compile : R.drawable.uncompile);
     }
 
@@ -110,6 +114,7 @@ public class CheckAdapter extends RecyclerView.Adapter<CheckAdapter.ViewHolder> 
         TextView shopName;
         TextView checkNum;
         TextView time;
+        TextView timeData;
         ImageView checkStatus;
 
         SwipeItemView swipeItemView;
@@ -120,6 +125,7 @@ public class CheckAdapter extends RecyclerView.Adapter<CheckAdapter.ViewHolder> 
             shopName = itemView.findViewById(R.id.shopName);
             checkStatus = itemView.findViewById(R.id.checkStatus);
             time = itemView.findViewById(R.id.time);
+            timeData = itemView.findViewById(R.id.timeData);
 
             swipeItemView = (SwipeItemView) itemView;
         }

@@ -117,7 +117,6 @@ public class NewCheckActivity extends AppCompatActivity {
                 model.sheetNo = storeList.getShopInfo().getCompanyNo();
                 model.storeName = storeTv.getText().toString();
 
-
                 final ProgressDialog pd = new ProgressDialog(NewCheckActivity.this);
                 HttpPostService apiService = retrofit.create(HttpPostService.class);
                 Observable<StoreList> observable = apiService.createGoodsCheck(companyNo, sn, storeList.getShopInfo().getAreaCode(), storeId.toString(), "创建订单");
@@ -144,6 +143,7 @@ public class NewCheckActivity extends AppCompatActivity {
 
                                            model.createTime = s.getSheetInfo().getCreateTime();
                                            model.sheetNo = s.getSheetInfo().getSheetNo();
+                                           model.sheetStatus = Integer.valueOf(s.getSheetInfo().getSheetStatus());
                                            startActivity(ChengWeiScanActivity.getCallIntent(NewCheckActivity.this, model));
                                            finish();
                                        }

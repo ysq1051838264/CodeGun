@@ -8,9 +8,13 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 
 import com.github.dfqin.grantor.PermissionListener;
@@ -19,7 +23,9 @@ import com.jiafeng.codegun.R;
 import com.jiafeng.codegun.http.BaseRetrofit;
 import com.jiafeng.codegun.http.HttpPostService;
 import com.jiafeng.codegun.http.RetrofitEntity;
+import com.jiafeng.codegun.model.StoreList;
 import com.jiafeng.codegun.util.ShareHelper;
+import com.jiafeng.codegun.util.ToastMaker;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -39,6 +45,14 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        Window window = this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        ViewGroup viewGroup = (ViewGroup) this.findViewById(Window.ID_ANDROID_CONTENT);
+        View childView = viewGroup.getChildAt(0);
+        if (null != childView) {
+            ViewCompat.setFitsSystemWindows(childView, false);
+        }
 
         initData();
     }
@@ -79,54 +93,53 @@ public class LoginActivity extends AppCompatActivity {
         String sn = getSerialNumber();
         String imei = getIMEI(LoginActivity.this);
 
-        //Toast.makeText(this, "sn是：" + sn +"   imei"+imei, Toast.LENGTH_SHORT).show();
-
         ShareHelper shareHelper = ShareHelper.initInstance(this);
         shareHelper.setString(ShareHelper.KEY_IMEI, imei);
         shareHelper.setString(ShareHelper.KEY_MAC, mac);
         shareHelper.setString(ShareHelper.KEY_SN, sn);
 
-//        startActivity(new Intent(LoginActivity.this, CheckListActivity.class));
-//        finish();
-
-        Retrofit retrofit =  BaseRetrofit.getInstance();
+        Retrofit retrofit = BaseRetrofit.getInstance();
 
         final ProgressDialog pd = new ProgressDialog(this);
         HttpPostService apiService = retrofit.create(HttpPostService.class);
-        Observable<RetrofitEntity> observable = apiService.checkDeviceInfo(sn);
+        Observable<StoreList> observable = apiService.checkDeviceInfo(sn);
         observable.subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<RetrofitEntity>() {
-                            @Override
-                            public void onCompleted() {
-                                if (pd != null && pd.isShowing()) {
-                                    pd.dismiss();
-                                }
+                .subscribe(new Subscriber<StoreList>() {
+                               @Override
+                               public void onCompleted() {
+                                   if (pd != null && pd.isShowing()) {
+                                       pd.dismiss();
+                                   }
+                               }
 
-                                startActivity(new Intent(LoginActivity.this, CheckListActivity.class));
-                                finish();
-                            }
+                               @Override
+                               public void onError(Throwable e) {
+                                   if (pd != null && pd.isShowing()) {
+                                       pd.dismiss();
+                                   }
+                               }
 
-                            @Override
-                            public void onError(Throwable e) {
-                                if (pd != null && pd.isShowing()) {
-                                    pd.dismiss();
-                                }
-                            }
+                               @Override
+                               public void onNext(StoreList storeList) {
+                                   if (storeList.isSuccess()) {
+                                       ShareHelper shareHelper = ShareHelper.initInstance(LoginActivity.this);
+                                       shareHelper.setString(ShareHelper.KEY_COMPANY_NO, storeList.getAreaInfo().getCompanyNo());
+                                       startActivity(new Intent(LoginActivity.this, CheckListActivity.class));
+                                       finish();
+                                   } else {
+                                       ToastMaker.show(LoginActivity.this, storeList.getMsg());
+                                   }
 
-                            @Override
-                            public void onNext(RetrofitEntity retrofitEntity) {
-                                ShareHelper shareHelper = ShareHelper.initInstance(LoginActivity.this);
-                                shareHelper.setString(ShareHelper.KEY_COMPANY_NO, retrofitEntity.getAreaInfo().getCompanyNo());
-                            }
+                               }
 
-                            @Override
-                            public void onStart() {
-                                super.onStart();
-                                pd.show();
-                            }
-                        }
+                               @Override
+                               public void onStart() {
+                                   super.onStart();
+                                   pd.show();
+                               }
+                           }
 
                 );
     }
@@ -140,12 +153,12 @@ public class LoginActivity extends AppCompatActivity {
         return imei;
     }
 
-    private String getSerialNumber(){
+    private String getSerialNumber() {
         String serial = null;
         try {
-            Class<?> c =Class.forName("android.os.SystemProperties");
-            Method get =c.getMethod("get", String.class);
-            serial = (String)get.invoke(c, "ro.serialno");
+            Class<?> c = Class.forName("android.os.SystemProperties");
+            Method get = c.getMethod("get", String.class);
+            serial = (String) get.invoke(c, "ro.serialno");
         } catch (Exception e) {
             e.printStackTrace();
         }
