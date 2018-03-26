@@ -10,6 +10,7 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -27,15 +28,22 @@ import com.jiafeng.codegun.customzie.seekbar.BubbleSeekBar;
 import com.jiafeng.codegun.http.BaseRetrofit;
 import com.jiafeng.codegun.http.HttpPostService;
 import com.jiafeng.codegun.model.StoreList;
+import com.jiafeng.codegun.model.StoreModel;
 import com.jiafeng.codegun.util.ShareHelper;
 import com.jiafeng.codegun.util.SoundManage;
 import com.jiafeng.codegun.util.StringUtils;
+import com.jiafeng.codegun.util.ToastMaker;
 import com.rscja.deviceapi.RFIDWithUHF;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import io.realm.Realm;
+import io.realm.RealmChangeListener;
+import io.realm.RealmObject;
+import io.realm.RealmResults;
 import retrofit2.Retrofit;
 import rx.Observable;
 import rx.Subscriber;
@@ -62,8 +70,11 @@ public class ChengWeiScanActivity extends AppCompatActivity {
     ListView LvTags;
     BubbleSeekBar seekbar;
     TextView nameTv;
+    Boolean flag;
 
     static String NEW_CHECK_MODEL = "new_check_model";
+    static String NEW_CHECK_MODEL_FLAG = "new_check_model_flag";
+    static String NEW_CHECK_MODEL_POSITION = "new_check_model_position";
     private ArrayList<HashMap<String, String>> tagList;
     private List<EpcDataModel> listEpc = null;
     private HashMap<String, String> map;
@@ -72,9 +83,10 @@ public class ChengWeiScanActivity extends AppCompatActivity {
 
     int value = 30;
 
-    public static Intent getCallIntent(Context context, CheckModel model) {
+    public static Intent getCallIntent(Context context, CheckModel model, Boolean flag) {
         return new Intent(context, ChengWeiScanActivity.class)
-                .putExtra(NEW_CHECK_MODEL, model);
+                .putExtra(NEW_CHECK_MODEL, model)
+                .putExtra(NEW_CHECK_MODEL_FLAG, flag);
     }
 
     @Override
@@ -83,8 +95,25 @@ public class ChengWeiScanActivity extends AppCompatActivity {
         setContentView(R.layout.activity_scan_chengwei);
 
         model = getIntent().getParcelableExtra(NEW_CHECK_MODEL);
+        flag = getIntent().getBooleanExtra(NEW_CHECK_MODEL_FLAG, false);
+
         tagList = new ArrayList<HashMap<String, String>>();
         listEpc = new ArrayList<EpcDataModel>();
+
+        if (flag) {
+
+            try {
+                RealmObject bean = RealmOperationHelper.getInstance(BaseApplication.REALM_INSTANCE).queryByFieldFirst(CheckModel.class, "sheetNo", model.sheetNo);
+                // model = (CheckModel) bean;
+                model.setId(((CheckModel) bean).getId());
+                model.setGuids(((CheckModel) bean).getGuids());
+                model.setTids(((CheckModel) bean).getTids());
+                model.setCompanyNo(((CheckModel) bean).getCompanyNo());
+                model.setCheckNum(((CheckModel) bean).getCheckNum());
+            } catch (NoSuchFieldException e) {
+                e.printStackTrace();
+            }
+        }
 
         adapter = new EPCadapter(ChengWeiScanActivity.this, listEpc);
         try {
@@ -147,19 +176,56 @@ public class ChengWeiScanActivity extends AppCompatActivity {
 
     public void save() {
         stopInventory();
-        model.checkNum = listEpc.size() + "";
-        RealmOperationHelper.getInstance(BaseApplication.REALM_INSTANCE).add(model);
+        if (listEpc != null && listEpc.size() > 0) {
+            model.setCheckNum(listEpc.size() + "");
+
+            StringBuilder tid = new StringBuilder();
+            StringBuilder guid = new StringBuilder();
+
+            for (EpcDataModel d : listEpc) {
+                tid.append(d.getTid());
+                guid.append(d.getepc());
+
+                if (d != listEpc.get(listEpc.size() - 1)) {
+                    tid.append(",");
+                    guid.append(",");
+                }
+            }
+
+            model.setTids(tid.toString());
+            model.setGuids(guid.toString());
+
+            if (!flag)
+                RealmOperationHelper.getInstance(BaseApplication.REALM_INSTANCE).add(model);
+            else {
+//                RealmOperationHelper ream = RealmOperationHelper.getInstance(BaseApplication.REALM_INSTANCE);
+//                ream.copyToRealm(model);
+                Realm mRealm = BaseApplication.REALM_INSTANCE;
+                mRealm.executeTransaction(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        realm.copyToRealm(model);
+                    }
+                });
+            }
+        }
+
     }
 
     public void saveData() {
         save();
+
+        if (StringUtils.isEmpty(model.tids) && listEpc.size() == 0) {
+            ToastMaker.show(ChengWeiScanActivity.this, "您还尚未进行盘点");
+            return;
+        }
 
         String sn = ShareHelper.getInstance().getString(ShareHelper.KEY_SN, null);
 
         Retrofit retrofit = BaseRetrofit.getInstance();
         final ProgressDialog pd = new ProgressDialog(this);
         HttpPostService apiService = retrofit.create(HttpPostService.class);
-        Observable<StoreList> observable = apiService.submitGoodsCheck(model.companyNo, sn, "", model.sheetNo, "");
+        Observable<StoreList> observable = apiService.submitGoodsCheck(model.companyNo, sn, model.tids, model.id, model.guids);
         observable.subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -346,15 +412,14 @@ public class ChengWeiScanActivity extends AppCompatActivity {
                     }
                     strTid = res[0];
                     if (StringUtils.isNotEmpty(strTid) && strTid.length() != 0 && !strTid.equals("0000000000000000") && !strTid.equals("000000000000000000000000")) {
-                        // strResult = "TID:" + strTid + "\n";
-                        tempData.append("TID:");//
+                        //  tempData.append("TID:");//
                         tempData.append(strTid);
-                        tempData.append("\n");
+                        tempData.append("@");
                     } else {
                         strResult = "";//
                         // tempData.append("");//
                     }
-                    tempData.append("@EPC:");
+                    //  tempData.append("@EPC:");
                     tempData.append(mReader.convertUiiToEPC(res[1]));
                     tempData.append("@");
                     tempData.append(res[2]);

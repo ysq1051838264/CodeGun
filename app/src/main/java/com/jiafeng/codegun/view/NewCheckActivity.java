@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -18,6 +19,8 @@ import com.jiafeng.codegun.http.BaseRetrofit;
 import com.jiafeng.codegun.http.HttpPostService;
 import com.jiafeng.codegun.model.StoreList;
 import com.jiafeng.codegun.util.ShareHelper;
+import com.jiafeng.codegun.util.StringUtils;
+import com.jiafeng.codegun.util.ToastMaker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +40,7 @@ public class NewCheckActivity extends AppCompatActivity {
     ImageView image;
     View back;
     RelativeLayout productType;
+    LinearLayout storeNameLly;
 
     Retrofit retrofit;
     String companyNo;
@@ -102,6 +106,7 @@ public class NewCheckActivity extends AppCompatActivity {
 
     private void initView() {
         productType = findViewById(R.id.productType);
+        storeNameLly = findViewById(R.id.storeNameLly);
         storeTv = findViewById(R.id.storeTv);
         shopCode = findViewById(R.id.shopCode);
         image = findViewById(R.id.image);
@@ -112,6 +117,11 @@ public class NewCheckActivity extends AppCompatActivity {
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (StringUtils.isEmpty(storeTv.getText().toString())) {
+                    ToastMaker.show(NewCheckActivity.this, "请选择柜台");
+                    return;
+                }
+
                 final CheckModel model = new CheckModel();
                 model.shopName = storeList.getShopInfo().getShopName();
                 model.sheetNo = storeList.getShopInfo().getCompanyNo();
@@ -144,7 +154,8 @@ public class NewCheckActivity extends AppCompatActivity {
                                            model.createTime = s.getSheetInfo().getCreateTime();
                                            model.sheetNo = s.getSheetInfo().getSheetNo();
                                            model.sheetStatus = Integer.valueOf(s.getSheetInfo().getSheetStatus());
-                                           startActivity(ChengWeiScanActivity.getCallIntent(NewCheckActivity.this, model));
+                                           model.id = s.getSheetInfo().getId();
+                                           startActivity(ChengWeiScanActivity.getCallIntent(NewCheckActivity.this, model,false));
                                            finish();
                                        }
 
@@ -169,7 +180,7 @@ public class NewCheckActivity extends AppCompatActivity {
         productType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MultiSelectPopupWindows productsMultiSelectPopupWindows = new MultiSelectPopupWindows(NewCheckActivity.this, productType, 230, stores);
+                MultiSelectPopupWindows productsMultiSelectPopupWindows = new MultiSelectPopupWindows(NewCheckActivity.this, storeNameLly, 230, stores);
                 image.setImageResource(R.drawable.push);
                 productsMultiSelectPopupWindows.setOnDismissListener(new PopupWindow.OnDismissListener() {
                     @Override
@@ -187,12 +198,17 @@ public class NewCheckActivity extends AppCompatActivity {
                         StringBuilder s = new StringBuilder();
                         storeId = new StringBuilder();
 
-                        for (StoreModel d : selectStores) {
-                            s.append(d.getStoreName());
-                            storeId.append(d.getId());
-                            if (d != selectStores.get(selectStores.size() - 1)) {
-                                s.append(",");
-                                storeId.append(",");
+                        if (selectStores.size() == stores.size()) {
+                            s.append("全部柜台");
+                            storeId.append("-1");
+                        } else {
+                            for (StoreModel d : selectStores) {
+                                s.append(d.getStoreName());
+                                storeId.append(d.getId());
+                                if (d != selectStores.get(selectStores.size() - 1)) {
+                                    s.append(",");
+                                    storeId.append(",");
+                                }
                             }
                         }
 

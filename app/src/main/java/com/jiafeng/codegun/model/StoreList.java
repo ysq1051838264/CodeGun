@@ -12,6 +12,7 @@ public class StoreList {
     ShopInfo shopInfo;
     SheetInfo sheetInfo;
     CompanyInfo areaInfo;
+    CheckResInfo checkResInfo;
     String timestamp;
     String msg;
     String ret;
@@ -83,5 +84,13 @@ public class StoreList {
 
     public void setAreaInfo(CompanyInfo areaInfo) {
         this.areaInfo = areaInfo;
+    }
+
+    public CheckResInfo getCheckResInfo() {
+        return checkResInfo;
+    }
+
+    public void setCheckResInfo(CheckResInfo checkResInfo) {
+        this.checkResInfo = checkResInfo;
     }
 }

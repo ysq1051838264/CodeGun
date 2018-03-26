@@ -40,9 +40,9 @@ public class MultiSelectPopupWindows extends PopupWindow {
     private void initView() {
         View view = View.inflate(context, R.layout.popupwindows_multiselect, null);
         view.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_in_slow));
-        LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.linearLayout_selector);
+        LinearLayout linearLayout = view.findViewById(R.id.linearLayout_selector);
         linearLayout.startAnimation(AnimationUtils.loadAnimation(context, R.anim.list_top_in));
-        final ListView listView = (ListView) view.findViewById(R.id.listView_selector);
+        final ListView listView = view.findViewById(R.id.listView_selector);
         Button selectData = view.findViewById(R.id.selectData);
 
         setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
@@ -51,7 +51,7 @@ public class MultiSelectPopupWindows extends PopupWindow {
         setFocusable(true);
         setOutsideTouchable(true);
         setContentView(view);
-        showAtLocation(parent, Gravity.TOP, 0, DensityUtil.dip2px(context, yStart));
+        showAtLocation(parent, Gravity.NO_GRAVITY,0, DensityUtil.dip2px(context, yStart));
         update();
 
         initListView(listView, data);

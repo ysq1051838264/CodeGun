@@ -99,7 +99,7 @@
                 android:text="门店:" />
 
             <TextView
-                android:id="@+id/nameTv"
+                android:id="@+id/shopName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="4"
@@ -118,6 +118,7 @@
                 android:text="实盘数量:" />
 
             <TextView
+                android:id="@+id/spNum"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="4"
@@ -136,6 +137,7 @@
                 android:text="盘盈数量:" />
 
             <TextView
+                android:id="@+id/pyNum"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="4"
@@ -154,6 +156,7 @@
                 android:text="盘亏数量:" />
 
             <TextView
+                android:id="@+id/pkNum"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="4"
@@ -172,6 +175,7 @@
                 android:text="未知标签数量:" />
 
             <TextView
+                android:id="@+id/wzNum"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="4"

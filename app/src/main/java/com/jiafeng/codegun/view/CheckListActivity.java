@@ -12,18 +12,21 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.jiafeng.codegun.R;
 import com.jiafeng.codegun.adapter.CheckAdapter;
-import com.jiafeng.codegun.model.CheckModel;
 import com.jiafeng.codegun.adapter.SpaceDivider;
 import com.jiafeng.codegun.base.BaseApplication;
 import com.jiafeng.codegun.base.RealmOperationHelper;
 import com.jiafeng.codegun.http.BaseRetrofit;
 import com.jiafeng.codegun.http.HttpPostService;
+import com.jiafeng.codegun.model.CheckModel;
 import com.jiafeng.codegun.model.StoreList;
 import com.jiafeng.codegun.util.ShareHelper;
 import com.jiafeng.codegun.util.ToastMaker;
+
 import java.util.ArrayList;
+
 import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 import retrofit2.Retrofit;
@@ -41,6 +44,9 @@ public class CheckListActivity extends AppCompatActivity {
 
     long exitTime = 0L;
     Retrofit retrofit;
+    String sn;
+    HttpPostService apiService;
+    ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,29 +56,33 @@ public class CheckListActivity extends AppCompatActivity {
         initView();
         initData();
         initAdapterData();
+        //  requestData();
     }
 
     private void initData() {
-        mRecyclerView.setLayoutManager(new LinearLayutManager(this));
-        mRecyclerView.addItemDecoration(new SpaceDivideor(60));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.addItemDecoration(new SpaceDivider(60));
 
         mAdapter = new CheckAdapter(models);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addOnItemTouchListener(mAdapter.getSwipeOnItemListener());
 
         retrofit = BaseRetrofit.getInstance();
-        final ProgressDialog pd = new ProgressDialog(this);
-        final HttpPostService apiService = retrofit.create(HttpPostService.class);
+        pd = new ProgressDialog(this);
+        apiService = retrofit.create(HttpPostService.class);
 
-        final String sn = ShareHelper.getInstance().getString(ShareHelper.KEY_SN, null);
+        sn = ShareHelper.initInstance(this).getString(ShareHelper.KEY_SN, "");
 
         mAdapter.setOnItemClickListener(new CheckAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                if (models.get(position).isCompile()) {
-                    startActivity(CheckDetailActivity.getCallIntent(CheckListActivity.this,models.get(position)));
+                if (models.get(position).sheetStatus == 3) {
+                    startActivity(CheckDetailActivity.getCallIntent(CheckListActivity.this, models.get(position)));
+                } else if (models.get(position).sheetStatus == 2) {
+                    ToastMaker.show(CheckListActivity.this, "盘点结果产生中,请稍等");
+                    requestData(false);
                 } else {
-                    startActivity(ChengWeiScanActivity.getCallIntent(CheckListActivity.this, models.get(position)));
+                    startActivity(ChengWeiScanActivity.getCallIntent(CheckListActivity.this, models.get(position), true));
                 }
             }
 
@@ -153,6 +163,9 @@ public class CheckListActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    public void requestData(final Boolean flag) {
         Observable<StoreList> observable = apiService.getGoodsCheckList(sn);
         observable.subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
@@ -183,7 +196,8 @@ public class CheckListActivity extends AppCompatActivity {
                                @Override
                                public void onStart() {
                                    super.onStart();
-                                   pd.show();
+                                   if (flag)
+                                       pd.show();
                                }
                            }
                 );
@@ -198,8 +212,8 @@ public class CheckListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (mAdapter != null) {
-//            initAdapterData();
+        if (pd != null && mAdapter != null) {
+            requestData(true);
         }
     }
 

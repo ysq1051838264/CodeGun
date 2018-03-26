@@ -1,4 +1,4 @@
-package com.jiafeng.codegun.adapter;
+package com.jiafeng.codegun.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -44,4 +44,28 @@ public class CheckDetailModel implements Parcelable {
             return new CheckDetailModel[size];
         }
     };
+
+    public String getBarCode() {
+        return barCode;
+    }
+
+    public void setBarCode(String barCode) {
+        this.barCode = barCode;
+    }
+
+    public String getOldBarCode() {
+        return oldBarCode;
+    }
+
+    public void setOldBarCode(String oldBarCode) {
+        this.oldBarCode = oldBarCode;
+    }
+
+    public String getGoodsName() {
+        return goodsName;
+    }
+
+    public void setGoodsName(String goodsName) {
+        this.goodsName = goodsName;
+    }
 }

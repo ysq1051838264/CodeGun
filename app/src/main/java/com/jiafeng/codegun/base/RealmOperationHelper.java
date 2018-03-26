@@ -1,5 +1,7 @@
 package com.jiafeng.codegun.base;
 
+import com.jiafeng.codegun.model.CheckModel;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -372,6 +374,12 @@ public class RealmOperationHelper {
         }
         mRealm.commitTransaction();
 
+    }
+
+    public void copyToRealm(CheckModel model){
+        mRealm.beginTransaction();
+        mRealm.copyToRealm(model);
+        mRealm.commitTransaction();
     }
 
     /**

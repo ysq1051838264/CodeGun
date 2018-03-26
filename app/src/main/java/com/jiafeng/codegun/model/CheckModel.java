@@ -20,58 +20,19 @@ public class CheckModel extends RealmObject implements Parcelable {
     public String storeName;    //盘点柜台
     public String storeId;    //柜台id(多个以逗号分隔开)
     public String checkNum = "0";    //实盘数量
-    public int sheetStatus;  //1：进行中；2：正在生产盘点结果数据;3:已结束
+    public int sheetStatus = 0;  //1：进行中；2：正在生产盘点结果数据;3:已结束
     public String createTime;   //创建时间
 
+    public String tids;
+    public String guids;
+
     public Boolean isCompile() {
-        return sheetStatus == 1;
+        return sheetStatus == 3;
     }
 
     public CheckModel() {
 
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.companyNo);
-        dest.writeString(this.id);
-        dest.writeString(this.sheetNo);
-        dest.writeString(this.shopName);
-        dest.writeString(this.storeName);
-        dest.writeString(this.storeId);
-        dest.writeString(this.checkNum);
-        dest.writeInt(this.sheetStatus);
-        dest.writeString(this.createTime);
-    }
-
-    protected CheckModel(Parcel in) {
-        this.companyNo = in.readString();
-        this.id = in.readString();
-        this.sheetNo = in.readString();
-        this.shopName = in.readString();
-        this.storeName = in.readString();
-        this.storeId = in.readString();
-        this.checkNum = in.readString();
-        this.sheetStatus = in.readInt();
-        this.createTime = in.readString();
-    }
-
-    public static final Creator<CheckModel> CREATOR = new Creator<CheckModel>() {
-        @Override
-        public CheckModel createFromParcel(Parcel source) {
-            return new CheckModel(source);
-        }
-
-        @Override
-        public CheckModel[] newArray(int size) {
-            return new CheckModel[size];
-        }
-    };
 
     public String getCompanyNo() {
         return companyNo;
@@ -143,5 +104,67 @@ public class CheckModel extends RealmObject implements Parcelable {
 
     public void setCreateTime(String createTime) {
         this.createTime = createTime;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.companyNo);
+        dest.writeString(this.id);
+        dest.writeString(this.sheetNo);
+        dest.writeString(this.shopName);
+        dest.writeString(this.storeName);
+        dest.writeString(this.storeId);
+        dest.writeString(this.checkNum);
+        dest.writeInt(this.sheetStatus);
+        dest.writeString(this.createTime);
+        dest.writeString(this.tids);
+        dest.writeString(this.guids);
+    }
+
+    protected CheckModel(Parcel in) {
+        this.companyNo = in.readString();
+        this.id = in.readString();
+        this.sheetNo = in.readString();
+        this.shopName = in.readString();
+        this.storeName = in.readString();
+        this.storeId = in.readString();
+        this.checkNum = in.readString();
+        this.sheetStatus = in.readInt();
+        this.createTime = in.readString();
+        this.tids = in.readString();
+        this.guids = in.readString();
+    }
+
+    public static final Creator<CheckModel> CREATOR = new Creator<CheckModel>() {
+        @Override
+        public CheckModel createFromParcel(Parcel source) {
+            return new CheckModel(source);
+        }
+
+        @Override
+        public CheckModel[] newArray(int size) {
+            return new CheckModel[size];
+        }
+    };
+
+    public String getTids() {
+        return tids;
+    }
+
+    public void setTids(String tids) {
+        this.tids = tids;
+    }
+
+    public String getGuids() {
+        return guids;
+    }
+
+    public void setGuids(String guids) {
+        this.guids = guids;
     }
 }
