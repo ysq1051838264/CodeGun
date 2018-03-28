@@ -155,7 +155,7 @@ public class NewCheckActivity extends AppCompatActivity {
                                            model.sheetNo = s.getSheetInfo().getSheetNo();
                                            model.sheetStatus = Integer.valueOf(s.getSheetInfo().getSheetStatus());
                                            model.id = s.getSheetInfo().getId();
-                                           startActivity(ChengWeiScanActivity.getCallIntent(NewCheckActivity.this, model,false));
+                                           startActivity(ChengWeiScanActivity.getCallIntent(NewCheckActivity.this, model, false));
                                            finish();
                                        }
 
@@ -180,6 +180,8 @@ public class NewCheckActivity extends AppCompatActivity {
         productType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (stores == null)
+                    return;
                 MultiSelectPopupWindows productsMultiSelectPopupWindows = new MultiSelectPopupWindows(NewCheckActivity.this, storeNameLly, 230, stores);
                 image.setImageResource(R.drawable.push);
                 productsMultiSelectPopupWindows.setOnDismissListener(new PopupWindow.OnDismissListener() {

@@ -23,9 +23,9 @@ public interface HttpPostService {
     //8.升级
     @POST("updataCheck.do")
     @FormUrlEncoded
-    Observable<CheckModel> upLoad(@Field("platformName") String platformName,
+    Observable<StoreList> updataCheck(@Field("platformName") String platformName,
                                   @Field("versionCode") String versionCode,
-                                  @Field("build") String build);
+                                  @Field("appType") String appType );
 
     //1.校验
     @POST("checkDeviceInfo.do")

@@ -29,6 +29,8 @@ public class MultiSelectPopupWindows extends PopupWindow {
     private int yStart;
     private SearchPopupWindowsAdapter adapter;
 
+    Boolean flag = false;
+
     public MultiSelectPopupWindows(Context context, View parent, int yStart, List<StoreModel> data) {
         this.context = context;
         this.parent = parent;
@@ -43,7 +45,7 @@ public class MultiSelectPopupWindows extends PopupWindow {
         LinearLayout linearLayout = view.findViewById(R.id.linearLayout_selector);
         linearLayout.startAnimation(AnimationUtils.loadAnimation(context, R.anim.list_top_in));
         final ListView listView = view.findViewById(R.id.listView_selector);
-        Button selectData = view.findViewById(R.id.selectData);
+        final Button selectData = view.findViewById(R.id.selectData);
 
         setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
         setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -51,7 +53,7 @@ public class MultiSelectPopupWindows extends PopupWindow {
         setFocusable(true);
         setOutsideTouchable(true);
         setContentView(view);
-        showAtLocation(parent, Gravity.NO_GRAVITY,0, DensityUtil.dip2px(context, yStart));
+        showAtLocation(parent, Gravity.NO_GRAVITY, 0, DensityUtil.dip2px(context, yStart));
         update();
 
         initListView(listView, data);
@@ -59,9 +61,20 @@ public class MultiSelectPopupWindows extends PopupWindow {
         selectData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                for (StoreModel d : data) {
-                    d.setChecked(true);
+                if (!flag) {
+                    for (StoreModel d : data) {
+                        d.setChecked(true);
+                    }
+                    flag = true;
+                    selectData.setText("取消全选");
+                } else {
+                    for (StoreModel d : data) {
+                        d.setChecked(false);
+                    }
+                    flag = false;
+                    selectData.setText("全选");
                 }
+
                 initListView(listView, data);
             }
         });

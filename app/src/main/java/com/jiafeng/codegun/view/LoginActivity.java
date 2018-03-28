@@ -41,6 +41,10 @@ import rx.schedulers.Schedulers;
 public class LoginActivity extends AppCompatActivity {
     Button loginBtn;
 
+    Retrofit retrofit;
+    ProgressDialog pd;
+    HttpPostService apiService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +58,58 @@ public class LoginActivity extends AppCompatActivity {
             ViewCompat.setFitsSystemWindows(childView, false);
         }
 
+
+        retrofit = BaseRetrofit.getInstance();
+
+        pd = new ProgressDialog(this);
+        apiService = retrofit.create(HttpPostService.class);
+
         initData();
+
+        //checkVersion();
+    }
+
+    private void checkVersion() {
+        Observable<StoreList> observable = apiService.updataCheck("v1.0.1","2","android");
+        observable.subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<StoreList>() {
+                               @Override
+                               public void onCompleted() {
+                                   if (pd != null && pd.isShowing()) {
+                                       pd.dismiss();
+                                   }
+                               }
+
+                               @Override
+                               public void onError(Throwable e) {
+                                   if (pd != null && pd.isShowing()) {
+                                       pd.dismiss();
+                                   }
+                               }
+
+                               @Override
+                               public void onNext(StoreList storeList) {
+                                   if (storeList.isSuccess()) {
+                                       ShareHelper shareHelper = ShareHelper.initInstance(LoginActivity.this);
+                                       shareHelper.setString(ShareHelper.KEY_COMPANY_NO, storeList.getAreaInfo().getCompanyNo());
+                                       startActivity(new Intent(LoginActivity.this, CheckListActivity.class));
+                                       finish();
+                                   } else {
+                                       ToastMaker.show(LoginActivity.this, storeList.getMsg());
+                                   }
+
+                               }
+
+                               @Override
+                               public void onStart() {
+                                   super.onStart();
+                                   pd.show();
+                               }
+                           }
+
+                );
     }
 
     private void initData() {
@@ -67,6 +122,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void requestPhone() {
         if (PermissionsUtil.hasPermission(this, Manifest.permission.READ_PHONE_STATE)) {
@@ -98,10 +154,7 @@ public class LoginActivity extends AppCompatActivity {
         shareHelper.setString(ShareHelper.KEY_MAC, mac);
         shareHelper.setString(ShareHelper.KEY_SN, sn);
 
-        Retrofit retrofit = BaseRetrofit.getInstance();
 
-        final ProgressDialog pd = new ProgressDialog(this);
-        HttpPostService apiService = retrofit.create(HttpPostService.class);
         Observable<StoreList> observable = apiService.checkDeviceInfo(sn);
         observable.subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
