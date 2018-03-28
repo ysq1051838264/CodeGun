@@ -42,7 +42,7 @@
                 android:layout_gravity="center"
                 android:text="10"
                 android:textSize="40sp"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/text_color"
                 android:textStyle="bold" />
 
             <TextView

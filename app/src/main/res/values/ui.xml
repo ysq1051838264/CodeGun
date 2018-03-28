@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <item name="ex_header" type="id"/>
+
     <style name="next_button">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">40dp</item>

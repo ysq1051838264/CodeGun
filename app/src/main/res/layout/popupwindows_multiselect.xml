@@ -10,8 +10,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="7dp"
         android:layout_marginRight="10dp"
-        android:background="@drawable/btn_bg_white"
+        android:background="@drawable/btn_background"
         android:minWidth="180dp"
         android:orientation="vertical">
 
@@ -20,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="30dp"
             android:background="@drawable/btn_gray"
             android:text="全选" />
 
@@ -28,7 +29,7 @@
             android:id="@+id/listView_selector"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="30dp"
             android:layout_marginTop="10dp"
             android:divider="@null" />
 

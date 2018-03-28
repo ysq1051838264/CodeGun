@@ -22,6 +22,7 @@ import com.jiafeng.codegun.util.ShareHelper;
 import com.jiafeng.codegun.util.StringUtils;
 import com.jiafeng.codegun.util.ToastMaker;
 
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -142,6 +143,9 @@ public class NewCheckActivity extends AppCompatActivity {
                                        public void onError(Throwable e) {
                                            if (pd != null && pd.isShowing()) {
                                                pd.dismiss();
+                                           }
+                                           if (e instanceof SocketTimeoutException) {
+                                               ToastMaker.show(NewCheckActivity.this, "网络不给力");
                                            }
                                        }
 

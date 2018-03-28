@@ -25,9 +25,9 @@ public class SearchPopupWindowsAdapter extends CommonBaseAdapter<StoreModel> {
     public View getView(final int i, View view, ViewGroup viewGroup) {
         view = inflater.inflate(R.layout.item_list_selector, viewGroup, false);
         if (view != null) {
-            RelativeLayout relativeLayout = (RelativeLayout) view.findViewById(R.id.relativeLayout_search);
-            TextView textView = (TextView) view.findViewById(R.id.textView_listView_selector);
-            final ImageView imageView = (ImageView) view.findViewById(R.id.image_search_check);
+            RelativeLayout relativeLayout = view.findViewById(R.id.relativeLayout_search);
+            TextView textView = view.findViewById(R.id.textView_listView_selector);
+            final ImageView imageView =  view.findViewById(R.id.image_search_check);
             imageView.setImageResource(itemList.get(i).isChecked() ? R.drawable.icon_selected : 0);
             textView.setText(itemList.get(i).getStoreName());
             relativeLayout.setOnClickListener(new View.OnClickListener() {

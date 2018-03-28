@@ -22,9 +22,14 @@ import com.jiafeng.codegun.http.BaseRetrofit;
 import com.jiafeng.codegun.http.HttpPostService;
 import com.jiafeng.codegun.model.CheckModel;
 import com.jiafeng.codegun.model.StoreList;
+import com.jiafeng.codegun.refresh.Footer.LoadingView;
+import com.jiafeng.codegun.refresh.RefreshListenerAdapter;
+import com.jiafeng.codegun.refresh.TwinklingRefreshLayout;
+import com.jiafeng.codegun.refresh.header.SinaRefreshView;
 import com.jiafeng.codegun.util.ShareHelper;
 import com.jiafeng.codegun.util.ToastMaker;
 
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 
 import io.realm.RealmChangeListener;
@@ -40,6 +45,7 @@ public class CheckListActivity extends AppCompatActivity {
     TextView createTv;
     TextView quitTv;
     CheckAdapter mAdapter;
+    TwinklingRefreshLayout refreshLayout;
     ArrayList<CheckModel> models = new ArrayList<>();
 
     long exitTime = 0L;
@@ -56,7 +62,6 @@ public class CheckListActivity extends AppCompatActivity {
         initView();
         initData();
         initAdapterData();
-        //  requestData();
     }
 
     private void initData() {
@@ -80,7 +85,7 @@ public class CheckListActivity extends AppCompatActivity {
                     startActivity(CheckDetailActivity.getCallIntent(CheckListActivity.this, models.get(position)));
                 } else if (models.get(position).sheetStatus == 2) {
                     ToastMaker.show(CheckListActivity.this, "盘点结果产生中,请稍等");
-                    requestData(false);
+                    requestData(3);
                 } else {
                     startActivity(ChengWeiScanActivity.getCallIntent(CheckListActivity.this, models.get(position), true));
                 }
@@ -163,9 +168,23 @@ public class CheckListActivity extends AppCompatActivity {
         });
 
 
+        SinaRefreshView headerView = new SinaRefreshView(this);
+        headerView.setArrowResource(R.drawable.arrow);
+        headerView.setTextColor(0xff745D5C);
+        refreshLayout.setHeaderView(headerView);
+        refreshLayout.setEnableLoadmore(false);
+
+        refreshLayout.setOnRefreshListener(new RefreshListenerAdapter() {
+            @Override
+            public void onRefresh(TwinklingRefreshLayout refreshLayout) {
+                super.onRefresh(refreshLayout);
+                requestData(2);
+            }
+        });
+
     }
 
-    public void requestData(final Boolean flag) {
+    public void requestData(final int flag) {
         Observable<StoreList> observable = apiService.getGoodsCheckList(sn);
         observable.subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
@@ -183,6 +202,13 @@ public class CheckListActivity extends AppCompatActivity {
                                    if (pd != null && pd.isShowing()) {
                                        pd.dismiss();
                                    }
+
+                                   if (flag == 2)
+                                       refreshLayout.finishRefreshing();
+
+                                   if (e instanceof SocketTimeoutException) {
+                                       ToastMaker.show(CheckListActivity.this, "网络不给力");
+                                   }
                                }
 
                                @Override
@@ -191,13 +217,16 @@ public class CheckListActivity extends AppCompatActivity {
                                    RealmOperationHelper.getInstance(BaseApplication.REALM_INSTANCE).add(models);
                                    mAdapter.setModels(models);
                                    mAdapter.notifyDataSetChanged();
+                                   if (flag == 2)
+                                       refreshLayout.finishRefreshing();
                                }
 
                                @Override
                                public void onStart() {
                                    super.onStart();
-                                   if (flag)
+                                   if (flag == 1) {
                                        pd.show();
+                                   }
                                }
                            }
                 );
@@ -207,13 +236,14 @@ public class CheckListActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.recyclerView);
         quitTv = findViewById(R.id.quitTv);
         createTv = findViewById(R.id.createTv);
+        refreshLayout = findViewById(R.id.refresh);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         if (pd != null && mAdapter != null) {
-            requestData(true);
+            requestData(1);
         }
     }
 

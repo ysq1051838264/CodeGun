@@ -41,6 +41,7 @@ public class CheckDetailActivity extends AppCompatActivity {
     TextView pyNum;
     TextView pkNum;
     TextView wzNum;
+    TextView bookNum;
     TextView createTime;
 
     CheckDetailAdapter mAdapter;
@@ -92,7 +93,9 @@ public class CheckDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 mAdapter.setModels(pklist);
-                deficitBtn.setTextColor(CheckDetailActivity.this.getResources().getColor(R.color.text_bg));
+                deficitBtn.setTextColor(CheckDetailActivity.this.getResources().getColor(R.color.white));
+                deficitBtn.setBackgroundColor(CheckDetailActivity.this.getResources().getColor(R.color.text_bg));
+                winBtn.setBackgroundColor(CheckDetailActivity.this.getResources().getColor(R.color.white));
                 winBtn.setTextColor(CheckDetailActivity.this.getResources().getColor(R.color.text_666666));
             }
         });
@@ -101,7 +104,9 @@ public class CheckDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 mAdapter.setModels(pylist);
-                winBtn.setTextColor(CheckDetailActivity.this.getResources().getColor(R.color.text_bg));
+                winBtn.setTextColor(CheckDetailActivity.this.getResources().getColor(R.color.white));
+                winBtn.setBackgroundColor(CheckDetailActivity.this.getResources().getColor(R.color.text_bg));
+                deficitBtn.setBackgroundColor(CheckDetailActivity.this.getResources().getColor(R.color.white));
                 deficitBtn.setTextColor(CheckDetailActivity.this.getResources().getColor(R.color.text_666666));
             }
         });
@@ -141,6 +146,7 @@ public class CheckDetailActivity extends AppCompatActivity {
                                    createTime.setText(DateUtils.dateToString(DateUtils.stringToDate(sheetInfo.getCreateTime(),DateUtils.FORMAT_LONG), DateUtils.FORMAT_LONG));
 
                                    spNum.setText(d.getCheckResInfo().getSpNum());
+                                   bookNum.setText(d.getCheckResInfo().getBookNum());
                                    pyNum.setText(d.getCheckResInfo().getPyNum());
                                    pkNum.setText(d.getCheckResInfo().getPkNum());
                                    wzNum.setText(d.getCheckResInfo().getWzNum());
@@ -166,6 +172,7 @@ public class CheckDetailActivity extends AppCompatActivity {
         pyNum = findViewById(R.id.pyNum);
         pkNum = findViewById(R.id.pkNum);
         wzNum = findViewById(R.id.wzNum);
+        bookNum = findViewById(R.id.bookNum);
         createTime = findViewById(R.id.createTime);
 
         model = getIntent().getParcelableExtra(NEW_CHECK_MODEL);

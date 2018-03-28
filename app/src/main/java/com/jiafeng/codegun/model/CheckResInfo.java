@@ -7,6 +7,7 @@ import java.util.List;
  */
 
 public class CheckResInfo {
+    String bookNum;
     String pyNum;
     String pkNum;
     String wzNum;
@@ -69,5 +70,13 @@ public class CheckResInfo {
 
     public void setPylist(List<CheckDetailModel> pylist) {
         this.pylist = pylist;
+    }
+
+    public String getBookNum() {
+        return bookNum;
+    }
+
+    public void setBookNum(String bookNum) {
+        this.bookNum = bookNum;
     }
 }

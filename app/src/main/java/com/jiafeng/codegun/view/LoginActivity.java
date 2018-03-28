@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.lang.reflect.Method;
+import java.net.SocketTimeoutException;
 
 import retrofit2.Retrofit;
 import rx.Observable;
@@ -171,6 +172,10 @@ public class LoginActivity extends AppCompatActivity {
                                public void onError(Throwable e) {
                                    if (pd != null && pd.isShowing()) {
                                        pd.dismiss();
+                                   }
+
+                                   if (e instanceof SocketTimeoutException) {
+                                       ToastMaker.show(LoginActivity.this, "网络不给力");
                                    }
                                }
 

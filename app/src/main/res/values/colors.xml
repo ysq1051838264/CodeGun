@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#152997</color>
+    <color name="colorPrimaryDark">#152997</color>
     <color name="colorAccent">#FF4081</color>
+
     <color name="gre">#607D8B</color>
-    <color name="blu">#03A9E4</color>
+    <color name="blu">#3966ee</color>
     <color name="gre2">#4C9F50</color>
     <color name="bg">#9E9E9E</color>
     <color name="br">#000000</color>
     <color name="wr">#FFFFFF</color>
     <color name="mycolor1">#996633</color>
     <color name="allbg">#EEEEEE</color>
-    <color name="coloum">#EDEDED</color>
 
-    <color name="text_color">#0D3AA0</color>
-    <color name="text_bg">#003894</color>
+    <color name="coloum">#ededed</color>
+
+    <color name="text_color">#3966ee</color>
+    <color name="text_bg">#3966ee</color>
     <color name="text_666666">#666666</color>
     <color name="pull_down_bg">#F7F7F7</color>
     <color name="pull_down_text">#EAEAEA</color>
@@ -23,9 +25,13 @@
     <color name="ededed">#EDEDED</color>
     <color name="edeeef">#bbc1c1</color>
     <color name="e6e6e6">#e6e6e6</color>
-    <color name="color_blue">#123de0</color>
     <color name="color_gray_333333">#333333</color>
 
     <color name="color_gray_323334">#323334</color>
+
+    <color name="Orange">#e75946</color>
+    <color name="Yellow">#f4d227</color>
+    <color name="Blue">#4674e7</color>
+    <color name="Green">#0ba62c</color>
 
 </resources>
