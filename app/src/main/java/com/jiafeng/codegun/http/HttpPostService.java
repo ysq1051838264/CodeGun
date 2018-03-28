@@ -24,8 +24,8 @@ public interface HttpPostService {
     @POST("updataCheck.do")
     @FormUrlEncoded
     Observable<StoreList> updataCheck(@Field("platformName") String platformName,
-                                  @Field("versionCode") String versionCode,
-                                  @Field("appType") String appType );
+                                      @Field("versionCode") String versionCode,
+                                      @Field("appType") String appType);
 
     //1.校验
     @POST("checkDeviceInfo.do")
@@ -41,7 +41,7 @@ public interface HttpPostService {
     //3.获取盘点列表
     @POST("getGoodsCheckList.do")
     @FormUrlEncoded
-    Observable<StoreList> getGoodsCheckList(@Field("sn") String sn);
+    Observable<StoreList> getGoodsCheckList(@Field("sn") String sn, @Field("pageSize") String pageSize, @Field("pageNo") String pageNo);
 
     //4.根据ID查询盘点单详情
     @POST("getGoodsCheckDtl.do")
@@ -68,9 +68,9 @@ public interface HttpPostService {
     @POST("submitGoodsCheck.do")
     @FormUrlEncoded
     Observable<StoreList> submitGoodsCheck(@Field("companyNo") String companyNo,
-                                                @Field("sn") String sn,
-                                                @Field("tidStr") String tidStr,
-                                                @Field("sheetId") String sheetId,
-                                                @Field("guidStr") String guidStr);
+                                           @Field("sn") String sn,
+                                           @Field("tidStr") String tidStr,
+                                           @Field("sheetId") String sheetId,
+                                           @Field("guidStr") String guidStr);
 
 }

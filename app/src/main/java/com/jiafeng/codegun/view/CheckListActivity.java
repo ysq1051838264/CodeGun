@@ -54,6 +54,8 @@ public class CheckListActivity extends AppCompatActivity {
     HttpPostService apiService;
     ProgressDialog pd;
 
+    int page = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,7 +87,7 @@ public class CheckListActivity extends AppCompatActivity {
                     startActivity(CheckDetailActivity.getCallIntent(CheckListActivity.this, models.get(position)));
                 } else if (models.get(position).sheetStatus == 2) {
                     ToastMaker.show(CheckListActivity.this, "盘点结果产生中,请稍等");
-                    requestData(3);
+                    requestData(3, page);
                 } else {
                     startActivity(ChengWeiScanActivity.getCallIntent(CheckListActivity.this, models.get(position), true));
                 }
@@ -172,20 +174,38 @@ public class CheckListActivity extends AppCompatActivity {
         headerView.setArrowResource(R.drawable.arrow);
         headerView.setTextColor(0xff745D5C);
         refreshLayout.setHeaderView(headerView);
-        refreshLayout.setEnableLoadmore(false);
+
+        LoadingView loadingView = new LoadingView(this);
+        refreshLayout.setBottomView(loadingView);
 
         refreshLayout.setOnRefreshListener(new RefreshListenerAdapter() {
             @Override
             public void onRefresh(TwinklingRefreshLayout refreshLayout) {
                 super.onRefresh(refreshLayout);
-                requestData(2);
+                page = 1;
+                requestData(2, page);
+            }
+
+            @Override
+            public void onLoadMore(TwinklingRefreshLayout refreshLayout) {
+                super.onLoadMore(refreshLayout);
+                page = page + 1;
+                requestData(4, page);
             }
         });
 
     }
 
-    public void requestData(final int flag) {
-        Observable<StoreList> observable = apiService.getGoodsCheckList(sn);
+    public void refresh(int flag) {
+        if (flag == 2)
+            refreshLayout.finishRefreshing();
+        if (flag == 4)
+            refreshLayout.finishLoadmore();
+
+    }
+
+    public void requestData(final int flag, final int page) {
+        Observable<StoreList> observable = apiService.getGoodsCheckList(sn, "20", String.valueOf(page));
         observable.subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -202,9 +222,7 @@ public class CheckListActivity extends AppCompatActivity {
                                    if (pd != null && pd.isShowing()) {
                                        pd.dismiss();
                                    }
-
-                                   if (flag == 2)
-                                       refreshLayout.finishRefreshing();
+                                   refresh(flag);
 
                                    if (e instanceof SocketTimeoutException) {
                                        ToastMaker.show(CheckListActivity.this, "网络不给力");
@@ -213,12 +231,26 @@ public class CheckListActivity extends AppCompatActivity {
 
                                @Override
                                public void onNext(StoreList storeList) {
-                                   models = (ArrayList<CheckModel>) storeList.getGoodscheck();
+                                   if (page == 1) {
+                                       if (models.size() > 0)
+                                           models.clear();
+                                       models = (ArrayList<CheckModel>) storeList.getGoodscheck();
+                                   } else {
+                                       for (CheckModel d : storeList.getGoodscheck()) {
+                                           models.add(d);
+                                       }
+                                   }
+
                                    RealmOperationHelper.getInstance(BaseApplication.REALM_INSTANCE).add(models);
                                    mAdapter.setModels(models);
                                    mAdapter.notifyDataSetChanged();
-                                   if (flag == 2)
-                                       refreshLayout.finishRefreshing();
+                                   refresh(flag);
+
+                                   if (storeList.getGoodscheck().size() < 20) {
+                                       refreshLayout.setEnableLoadmore(false);
+                                   } else {
+                                       refreshLayout.setEnableLoadmore(true);
+                                   }
                                }
 
                                @Override
@@ -243,7 +275,8 @@ public class CheckListActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if (pd != null && mAdapter != null) {
-            requestData(1);
+            page = 1;
+            requestData(1, page);
         }
     }
 
