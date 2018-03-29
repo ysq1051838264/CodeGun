@@ -70,6 +70,8 @@ public class ChengWeiScanActivity extends AppCompatActivity {
     ListView LvTags;
     BubbleSeekBar seekbar;
     TextView nameTv;
+
+    //判断是从哪个页面进来的
     Boolean flag;
 
     static String NEW_CHECK_MODEL = "new_check_model";

@@ -131,7 +131,7 @@
     <string name="version_not_update">暂不升级</string>
     <string name="version_upgrade_immediately">马上升级</string>
 
-    <string name="btInventory">开始识别</string>
-    <string name="title_stop_Inventory">停止识别</string>
+    <string name="btInventory">开始盘存</string>
+    <string name="title_stop_Inventory">停止盘存</string>
 </resources>
 

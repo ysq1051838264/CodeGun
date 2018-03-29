@@ -49,14 +49,13 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:text="单                  号:" />
+                    android:text="单                 号:" />
 
                 <TextView
                     android:id="@+id/sheetNo"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:text="1111111" />
+                    android:layout_weight="4" />
             </LinearLayout>
 
             <LinearLayout
@@ -68,14 +67,13 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:text="门                  店:" />
+                    android:text="门                 店:" />
 
                 <TextView
                     android:id="@+id/shopName"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:text="一店" />
+                    android:layout_weight="4" />
             </LinearLayout>
 
             <LinearLayout
@@ -93,8 +91,7 @@
                     android:id="@+id/bookNum"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:text="100" />
+                    android:layout_weight="4" />
             </LinearLayout>
 
             <LinearLayout
@@ -112,8 +109,7 @@
                     android:id="@+id/spNum"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:text="100" />
+                    android:layout_weight="4" />
             </LinearLayout>
 
             <LinearLayout
@@ -131,8 +127,7 @@
                     android:id="@+id/pyNum"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:text="100" />
+                    android:layout_weight="4" />
             </LinearLayout>
 
             <LinearLayout
@@ -150,8 +145,7 @@
                     android:id="@+id/pkNum"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:text="200" />
+                    android:layout_weight="4" />
             </LinearLayout>
 
             <LinearLayout
@@ -169,8 +163,7 @@
                     android:id="@+id/wzNum"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:text="200" />
+                    android:layout_weight="4" />
             </LinearLayout>
 
             <LinearLayout
@@ -190,8 +183,7 @@
                     android:id="@+id/createTime"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:text="2018-02-31 15:30:11" />
+                    android:layout_weight="4" />
             </LinearLayout>
         </LinearLayout>
 
