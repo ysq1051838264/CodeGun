@@ -25,6 +25,7 @@ public interface HttpPostService {
     @FormUrlEncoded
     Observable<StoreList> updataCheck(@Field("platformName") String platformName,
                                       @Field("versionCode") String versionCode,
+                                      @Field("build") int build,
                                       @Field("appType") String appType);
 
     //1.校验

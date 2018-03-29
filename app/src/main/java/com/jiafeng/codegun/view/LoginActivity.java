@@ -75,7 +75,17 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void checkVersion() {
-        Observable<StoreList> observable = checkService.updataCheck("rfidCheckApp","2","android");
+        int versionCode = 0;
+        String versionName = "1.0";
+
+        try {
+            versionCode = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
+            versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        Observable<StoreList> observable = checkService.updataCheck("rfidCheckApp", versionName, versionCode, "1");
         observable.subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -96,15 +106,9 @@ public class LoginActivity extends AppCompatActivity {
 
                                @Override
                                public void onNext(StoreList storeList) {
-                                   if (storeList.isSuccess()) {
-                                       ShareHelper shareHelper = ShareHelper.initInstance(LoginActivity.this);
-                                       shareHelper.setString(ShareHelper.KEY_COMPANY_NO, storeList.getAreaInfo().getCompanyNo());
-                                       startActivity(new Intent(LoginActivity.this, CheckListActivity.class));
-                                       finish();
-                                   } else {
-                                       ToastMaker.show(LoginActivity.this, storeList.getMsg());
+                                   if (storeList.isUpData()) {
+                                       startActivity(UpgradeActivity.getCallIntent(LoginActivity.this, storeList.getAppInfo()));
                                    }
-
                                }
 
                                @Override

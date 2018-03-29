@@ -1,72 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:orientation="vertical"
-                android:layout_margin="10dp"
-                android:layout_gravity="center"
-                android:padding="10dp"
-                android:background="@color/white"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-    <TextView
-            android:id="@+id/contentTv"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:lineSpacingExtra="3dp"
-            android:textColor="@android:color/black"
-            android:textSize="15sp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="10dp"
+    android:background="@drawable/background"
+    android:orientation="vertical"
+    android:padding="10dp">
 
+    <TextView
+        android:id="@+id/contentTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:lineSpacingExtra="3dp"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:textColor="@android:color/black"
+        android:textSize="15sp" />
 
     <LinearLayout
-            android:orientation="horizontal"
-            android:id="@+id/buttonBar"
-            android:layout_below="@id/contentTv"
-            android:layout_marginTop="20dp"
-            android:minHeight="40dp"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        android:id="@+id/buttonBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/contentTv"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:minHeight="40dp"
+        android:orientation="horizontal">
 
         <Button
-                android:id="@+id/cancelBtn"
-                android:textColor="@color/color_gray_333333"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_marginEnd="10dp"
-                android:layout_height="wrap_content"/>
+            android:id="@+id/cancelBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_gray"
+            android:textColor="@color/color_gray_333333" />
 
 
         <Button
-                android:id="@+id/confirmBtn"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_marginStart="10dp"
-                android:layout_height="wrap_content"/>
+            android:id="@+id/confirmBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_gray" />
 
     </LinearLayout>
 
     <ProgressBar
-            android:id="@+id/captionProgressBar"
-            android:layout_toStartOf="@+id/progressTv"
-            android:layout_below="@id/contentTv"
-            android:layout_marginTop="20dp"
-            android:visibility="gone"
-            style="@android:style/Widget.ProgressBar.Horizontal"
-            android:max="100"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="20dp"/>
+        android:id="@+id/captionProgressBar"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_below="@id/contentTv"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_toStartOf="@+id/progressTv"
+        android:max="100"
+        android:visibility="gone" />
 
     <TextView
-            android:visibility="gone"
-            android:id="@+id/progressTv"
-            android:text="0%"
-            android:layout_alignParentEnd="true"
-            android:layout_below="@id/contentTv"
-            android:layout_marginTop="20dp"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"/>
+        android:id="@+id/progressTv"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/contentTv"
+        android:layout_marginTop="20dp"
+        android:text="0%"
+        android:visibility="gone" />
 
 </RelativeLayout>

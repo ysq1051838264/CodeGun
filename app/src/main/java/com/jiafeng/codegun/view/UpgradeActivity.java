@@ -19,6 +19,8 @@ import com.jiafeng.codegun.R;
 import com.jiafeng.codegun.http.ProgressHelper;
 import com.jiafeng.codegun.http.ProgressResponseListener;
 import com.jiafeng.codegun.http.UIProgressResponseListener;
+import com.jiafeng.codegun.model.APPInfo;
+import com.jiafeng.codegun.model.CheckModel;
 import com.jiafeng.codegun.model.VersionData;
 
 import java.io.File;
@@ -37,7 +39,7 @@ import okhttp3.Response;
  */
 
 public class UpgradeActivity extends Activity {
-    VersionData versionData;
+    APPInfo appInfo;
     TextView contentTv;
     TextView progressTv;
     Button cancelBtn;
@@ -45,7 +47,7 @@ public class UpgradeActivity extends Activity {
     LinearLayout buttonBar;
     ProgressBar captionProgressBar;
 
-    public static Intent getCallIntent(Context context, VersionData versionData) {
+    public static Intent getCallIntent(Context context, APPInfo versionData) {
         return new Intent(context, UpgradeActivity.class).putExtra("data", versionData);
     }
 
@@ -69,15 +71,15 @@ public class UpgradeActivity extends Activity {
     }
 
     private void initData() {
-        this.versionData = getIntent().getParcelableExtra("data");
-        if (this.versionData == null) {
+        this.appInfo = getIntent().getParcelableExtra("data");
+        if (this.appInfo == null) {
             finish();
             return;
         }
 
-        contentTv.setText(versionData.message);
+        contentTv.setText(appInfo.getModify());
 
-        if (versionData.isForce) {
+        if (appInfo.getForceUpdate().equals("1")) {
             cancelBtn.setText(getResources().getString(R.string.version_exit));
         } else {
             cancelBtn.setText(getResources().getString(R.string.version_not_update));
@@ -108,7 +110,7 @@ public class UpgradeActivity extends Activity {
 
         final String filePath = getDiskCacheDir(this) + "/app.apk";
 
-        downloadFile(versionData.downloadUrl, filePath, new UIProgressResponseListener() {
+        downloadFile(appInfo.getUrl(), filePath, new UIProgressResponseListener() {
 
             @Override
             public void onFailure(Throwable error) {
@@ -118,7 +120,7 @@ public class UpgradeActivity extends Activity {
 
             @Override
             public void onUIResponseProgress(long bytesRead, long contentLength, boolean done) {
-               // LogUtils.log("hdr", "进度:", bytesRead, "/", contentLength);
+                // LogUtils.log("hdr", "进度:", bytesRead, "/", contentLength);
                 int progress = (int) (bytesRead * 100 / contentLength);
                 captionProgressBar.setProgress(progress);
                 progressTv.setText(progress + "%");
@@ -155,7 +157,7 @@ public class UpgradeActivity extends Activity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-              //  LogUtils.log("http", "文件路径是：", filePath);
+                //  LogUtils.log("http", "文件路径是：", filePath);
                 File file = new File(filePath);
                 //先确保父目录存在
                 File parent = file.getParentFile();
@@ -181,7 +183,7 @@ public class UpgradeActivity extends Activity {
         return call;
     }
 
-    public  String getDiskCacheDir(Context context) {
+    public String getDiskCacheDir(Context context) {
         String cachePath;
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
                 && !Environment.isExternalStorageRemovable()) {

@@ -27,6 +27,9 @@
         <activity android:name=".view.CheckDetailActivity" />
 
         <activity android:name=".view.ChengWeiScanActivity" />
+
+        <activity
+            android:name=".view.UpgradeActivity" />
     </application>
 
 </manifest>

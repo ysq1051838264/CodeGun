@@ -17,6 +17,9 @@ public class StoreList {
     String msg;
     String ret;
 
+    int needUpdateFlag;
+    APPInfo appInfo;
+
     public List<CheckModel> getGoodscheck() {
         return goodscheck;
     }
@@ -28,6 +31,10 @@ public class StoreList {
 
     public Boolean isSuccess() {
         return ret.equals("0");
+    }
+
+    public Boolean isUpData() {
+        return needUpdateFlag == 1;
     }
 
     public ShopInfo getShopInfo() {
@@ -92,5 +99,21 @@ public class StoreList {
 
     public void setCheckResInfo(CheckResInfo checkResInfo) {
         this.checkResInfo = checkResInfo;
+    }
+
+    public int getNeedUpdateFlag() {
+        return needUpdateFlag;
+    }
+
+    public void setNeedUpdateFlag(int needUpdateFlag) {
+        this.needUpdateFlag = needUpdateFlag;
+    }
+
+    public APPInfo getAppInfo() {
+        return appInfo;
+    }
+
+    public void setAppInfo(APPInfo appInfo) {
+        this.appInfo = appInfo;
     }
 }
