@@ -9,7 +9,7 @@ public class Api {
 
 //   public static  String baseUrl = "http://192.168.40.132:8888/JNERP/rfidApi/";
    public static  String baseUrl = "http://test.zberp.net:1111/JNERP/rfidApi/";
-
+   public static  String baseCheckUrl = "http://app.zberp.net:7777/AppPLatform/mobileApi/";
 //   public static  String baseUrl = "http://app.zberp.net:7777/AppPLatform/mobileApi/";
 
 }

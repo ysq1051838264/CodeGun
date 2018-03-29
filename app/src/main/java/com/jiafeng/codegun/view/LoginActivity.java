@@ -43,8 +43,10 @@ public class LoginActivity extends AppCompatActivity {
     Button loginBtn;
 
     Retrofit retrofit;
+    Retrofit checkRetrofit;
     ProgressDialog pd;
     HttpPostService apiService;
+    HttpPostService checkService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,17 +63,19 @@ public class LoginActivity extends AppCompatActivity {
 
 
         retrofit = BaseRetrofit.getInstance();
+        checkRetrofit = BaseRetrofit.getCheckInstance();
 
         pd = new ProgressDialog(this);
         apiService = retrofit.create(HttpPostService.class);
+        checkService = checkRetrofit.create(HttpPostService.class);
 
         initData();
 
-        //checkVersion();
+        checkVersion();
     }
 
     private void checkVersion() {
-        Observable<StoreList> observable = apiService.updataCheck("v1.0.1","2","android");
+        Observable<StoreList> observable = checkService.updataCheck("rfidCheckApp","2","android");
         observable.subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
