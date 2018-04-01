@@ -133,7 +133,7 @@ public class BubbleSeekBar extends View {
         mMax = a.getFloat(R.styleable.BubbleSeekBar_bsb_max, 100.0f);
         mProgress = a.getFloat(R.styleable.BubbleSeekBar_bsb_progress, mMin);
         isFloatType = a.getBoolean(R.styleable.BubbleSeekBar_bsb_is_float_type, false);
-        mTrackSize = a.getDimensionPixelSize(R.styleable.BubbleSeekBar_bsb_track_size, dp2px(2));
+        mTrackSize = a.getDimensionPixelSize(R.styleable.BubbleSeekBar_bsb_track_size, dp2px(4));
         mSecondTrackSize = a.getDimensionPixelSize(R.styleable.BubbleSeekBar_bsb_second_track_size,
                 mTrackSize + dp2px(2));
         mThumbRadius = a.getDimensionPixelSize(R.styleable.BubbleSeekBar_bsb_thumb_radius,

@@ -68,10 +68,10 @@
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_gravity="bottom"
-                    android:gravity="bottom"
                     android:layout_height="match_parent"
-                    android:layout_weight="3">
+                    android:layout_gravity="bottom"
+                    android:layout_weight="3"
+                    android:gravity="bottom">
 
                     <TextView
                         android:layout_width="14dp"
@@ -82,10 +82,10 @@
 
                     <TextView
                         android:id="@+id/createTime"
-                        android:textSize="12sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp" />
+                        android:layout_marginStart="5dp"
+                        android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -118,6 +118,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/storeLly"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1">
@@ -125,14 +126,15 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="未知标签:"
+                        android:text="柜台:"
                         android:textSize="14sp" />
 
                     <TextView
-                        android:id="@+id/wzNum"
-                        android:layout_width="0dp"
+                        android:id="@+id/storeName"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="4"
+                        android:ellipsize="end"
+                        android:singleLine="true"
                         android:textSize="14sp" />
                 </LinearLayout>
             </LinearLayout>
@@ -227,17 +229,42 @@
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="盘亏:"
-                    android:textSize="14sp" />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
 
-                <TextView
-                    android:id="@+id/pkNum"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="盘亏:"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/pkNum"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="未知标签:"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/wzNum"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp" />
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -343,7 +370,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/white"
+            android:background="@drawable/btn_bg_stroke"
             android:text="盘亏列表" />
     </LinearLayout>
 

@@ -278,13 +278,17 @@ public class ChengWeiScanActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(int progress, float progressFloat) {
                 nameTv.setText(String.valueOf(progress));
+                if (loopFlag) {
+                    stopInventory();
+                }
             }
 
             @Override
             public void getProgressOnActionUp(int progress, float progressFloat) {
+
                 if (mReader != null) {
                     if (mReader.setPower(progress)) {
-                        Toast.makeText(ChengWeiScanActivity.this, "范围设置成功" + mReader.getPower(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ChengWeiScanActivity.this, "范围设置成功", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(ChengWeiScanActivity.this, "范围设置失败", Toast.LENGTH_SHORT).show();
                     }
