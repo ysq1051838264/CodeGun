@@ -200,15 +200,8 @@ public class ChengWeiScanActivity extends AppCompatActivity {
             if (!flag)
                 RealmOperationHelper.getInstance(BaseApplication.REALM_INSTANCE).add(model);
             else {
-//                RealmOperationHelper ream = RealmOperationHelper.getInstance(BaseApplication.REALM_INSTANCE);
-//                ream.copyToRealm(model);
-                Realm mRealm = BaseApplication.REALM_INSTANCE;
-                mRealm.executeTransaction(new Realm.Transaction() {
-                    @Override
-                    public void execute(Realm realm) {
-                        realm.copyToRealm(model);
-                    }
-                });
+                //更新数据库
+
             }
         }
 

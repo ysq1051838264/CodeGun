@@ -64,6 +64,11 @@ public class CheckListActivity extends AppCompatActivity {
         initView();
         initData();
         initAdapterData();
+
+        if (models != null && models.size() > 0) {
+            RealmOperationHelper.getInstance(BaseApplication.REALM_INSTANCE).add(models);
+        }
+
     }
 
     private void initData() {
@@ -232,7 +237,7 @@ public class CheckListActivity extends AppCompatActivity {
                                @Override
                                public void onNext(StoreList storeList) {
                                    if (page == 1) {
-                                       if (models!=null && models.size() > 0)
+                                       if (models != null && models.size() > 0)
                                            models.clear();
                                        models = (ArrayList<CheckModel>) storeList.getGoodscheck();
                                    } else {
@@ -241,7 +246,6 @@ public class CheckListActivity extends AppCompatActivity {
                                        }
                                    }
 
-                                   RealmOperationHelper.getInstance(BaseApplication.REALM_INSTANCE).add(models);
                                    mAdapter.setModels(models);
                                    mAdapter.notifyDataSetChanged();
                                    refresh(flag);
