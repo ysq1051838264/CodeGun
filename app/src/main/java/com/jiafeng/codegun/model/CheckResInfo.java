@@ -10,6 +10,7 @@ public class CheckResInfo {
     String bookNum;
     String pyNum;
     String pkNum;
+    String ypNum;
     String wzNum;
     String spNum;
     String wzLabelStr;
@@ -78,5 +79,13 @@ public class CheckResInfo {
 
     public void setBookNum(String bookNum) {
         this.bookNum = bookNum;
+    }
+
+    public String getYpNum() {
+        return ypNum;
+    }
+
+    public void setYpNum(String ypNum) {
+        this.ypNum = ypNum;
     }
 }

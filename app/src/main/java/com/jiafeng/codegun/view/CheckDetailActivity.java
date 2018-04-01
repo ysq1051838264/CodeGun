@@ -40,6 +40,7 @@ public class CheckDetailActivity extends AppCompatActivity {
     TextView spNum;
     TextView pyNum;
     TextView pkNum;
+    TextView ypNum; //已盘数量
     TextView wzNum;
     TextView bookNum;
     TextView createTime;
@@ -150,6 +151,7 @@ public class CheckDetailActivity extends AppCompatActivity {
                                    pyNum.setText(d.getCheckResInfo().getPyNum());
                                    pkNum.setText(d.getCheckResInfo().getPkNum());
                                    wzNum.setText(d.getCheckResInfo().getWzNum());
+                                   ypNum.setText(d.getCheckResInfo().getYpNum());
                                }
 
                                @Override
@@ -174,6 +176,7 @@ public class CheckDetailActivity extends AppCompatActivity {
         wzNum = findViewById(R.id.wzNum);
         bookNum = findViewById(R.id.bookNum);
         createTime = findViewById(R.id.createTime);
+        ypNum = findViewById(R.id.ypNum);
 
         model = getIntent().getParcelableExtra(NEW_CHECK_MODEL);
 

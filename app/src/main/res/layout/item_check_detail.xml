@@ -11,18 +11,17 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="5dp"
         android:layout_weight="1"
         android:gravity="center"
         android:text="条码号"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/oldBarCode"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="5dp"
         android:layout_weight="1"
         android:gravity="center"
         android:text="原条码"
@@ -36,5 +35,23 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="商品名称" />
+
+    <TextView
+        android:id="@+id/labelPrice"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="价格" />
+
+    <TextView
+        android:id="@+id/goldWeight"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="金重" />
 
 </LinearLayout>

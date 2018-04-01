@@ -232,7 +232,7 @@ public class CheckListActivity extends AppCompatActivity {
                                @Override
                                public void onNext(StoreList storeList) {
                                    if (page == 1) {
-                                       if (models.size() > 0)
+                                       if (models!=null && models.size() > 0)
                                            models.clear();
                                        models = (ArrayList<CheckModel>) storeList.getGoodscheck();
                                    } else {

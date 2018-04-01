@@ -59,6 +59,10 @@ public class CheckDetailAdapter extends RecyclerView.Adapter<CheckDetailAdapter.
         holder.oldBarCode.setText(model.oldBarCode);
         holder.barCode.setText(model.barCode);
         holder.goodsName.setText(model.goodsName);
+        if (model.labelPrice != null)
+            holder.labelPrice.setText(model.labelPrice);
+        if (model.goldWeight != null)
+            holder.goldWeight.setText(model.goldWeight);
 
         holder.itemView.setTag(position);
     }
@@ -73,6 +77,8 @@ public class CheckDetailAdapter extends RecyclerView.Adapter<CheckDetailAdapter.
         TextView barCode;
         TextView oldBarCode;
         TextView goodsName;
+        TextView goldWeight;
+        TextView labelPrice;
 
 
         public ViewHolder(View itemView) {
@@ -80,6 +86,8 @@ public class CheckDetailAdapter extends RecyclerView.Adapter<CheckDetailAdapter.
             barCode = itemView.findViewById(R.id.barCode);
             oldBarCode = itemView.findViewById(R.id.oldBarCode);
             goodsName = itemView.findViewById(R.id.goodsName);
+            goldWeight = itemView.findViewById(R.id.goldWeight);
+            labelPrice = itemView.findViewById(R.id.labelPrice);
         }
     }
 
