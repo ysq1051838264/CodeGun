@@ -28,7 +28,9 @@ import com.jiafeng.codegun.model.StoreList;
 import com.jiafeng.codegun.util.DateUtils;
 import com.jiafeng.codegun.util.ShareHelper;
 import com.jiafeng.codegun.util.StringUtils;
+import com.jiafeng.codegun.util.ToastMaker;
 
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 
 import retrofit2.Retrofit;
@@ -136,7 +138,6 @@ public class CheckDetailActivity extends AppCompatActivity {
                 mAdapter.setModels(pylist);
                 winBtn.setTextColor(CheckDetailActivity.this.getResources().getColor(R.color.white));
                 winBtn.setBackgroundColor(CheckDetailActivity.this.getResources().getColor(R.color.text_bg));
-//                deficitBtn.setBackgroundColor(CheckDetailActivity.this.getResources().getColor(R.color.white));
                 deficitBtn.setBackground(CheckDetailActivity.this.getResources().getDrawable(R.drawable.btn_bg_stroke));
                 deficitBtn.setTextColor(CheckDetailActivity.this.getResources().getColor(R.color.text_666666));
             }
@@ -161,6 +162,10 @@ public class CheckDetailActivity extends AppCompatActivity {
                                public void onError(Throwable e) {
                                    if (pd != null && pd.isShowing()) {
                                        pd.dismiss();
+                                   }
+
+                                   if (e instanceof SocketTimeoutException) {
+                                       ToastMaker.show(CheckDetailActivity.this, "网络不给力");
                                    }
                                }
 

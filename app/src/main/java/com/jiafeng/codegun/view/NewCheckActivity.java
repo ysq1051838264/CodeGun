@@ -86,6 +86,10 @@ public class NewCheckActivity extends AppCompatActivity {
                                    if (pd != null && pd.isShowing()) {
                                        pd.dismiss();
                                    }
+
+                                   if (e instanceof SocketTimeoutException) {
+                                       ToastMaker.show(NewCheckActivity.this, "网络不给力");
+                                   }
                                }
 
                                @Override
@@ -186,7 +190,7 @@ public class NewCheckActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (stores == null)
                     return;
-                MultiSelectPopupWindows productsMultiSelectPopupWindows = new MultiSelectPopupWindows(NewCheckActivity.this, storeNameLly, 230, stores);
+                MultiSelectPopupWindows productsMultiSelectPopupWindows = new MultiSelectPopupWindows(NewCheckActivity.this, storeNameLly, 170, stores);
                 image.setImageResource(R.drawable.push);
                 productsMultiSelectPopupWindows.setOnDismissListener(new PopupWindow.OnDismissListener() {
                     @Override

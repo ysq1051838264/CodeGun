@@ -36,6 +36,7 @@ import com.jiafeng.codegun.util.ToastMaker;
 import com.rscja.deviceapi.RFIDWithUHF;
 
 import java.lang.reflect.InvocationTargetException;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -237,6 +238,10 @@ public class ChengWeiScanActivity extends AppCompatActivity {
                                public void onError(Throwable e) {
                                    if (pd != null && pd.isShowing()) {
                                        pd.dismiss();
+                                   }
+
+                                   if (e instanceof SocketTimeoutException) {
+                                       ToastMaker.show(ChengWeiScanActivity.this, "网络不给力");
                                    }
                                }
 
