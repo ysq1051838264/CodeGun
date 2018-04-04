@@ -37,6 +37,7 @@ import com.rscja.deviceapi.RFIDWithUHF;
 
 import java.lang.reflect.InvocationTargetException;
 import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -107,13 +108,14 @@ public class ChengWeiScanActivity extends AppCompatActivity {
 
             try {
                 RealmObject bean = RealmOperationHelper.getInstance(BaseApplication.REALM_INSTANCE).queryByFieldFirst(CheckModel.class, "sheetNo", model.sheetNo);
-                // model = (CheckModel) bean;
-                model.setId(((CheckModel) bean).getId());
-                model.setGuids(((CheckModel) bean).getGuids());
-                model.setTids(((CheckModel) bean).getTids());
-                model.setCompanyNo(((CheckModel) bean).getCompanyNo());
-                model.setCheckNum(((CheckModel) bean).getCheckNum());
-            } catch (NoSuchFieldException e) {
+                if (bean != null && StringUtils.isNotEmpty(((CheckModel) bean).getTids()) && StringUtils.isNotEmpty(((CheckModel) bean).getId())) {
+                    model.setId(((CheckModel) bean).getId());
+                    model.setGuids(((CheckModel) bean).getGuids());
+                    model.setTids(((CheckModel) bean).getTids());
+                    model.setCompanyNo(((CheckModel) bean).getCompanyNo());
+                    model.setCheckNum(((CheckModel) bean).getCheckNum());
+                }
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -240,7 +242,7 @@ public class ChengWeiScanActivity extends AppCompatActivity {
                                        pd.dismiss();
                                    }
 
-                                   if (e instanceof SocketTimeoutException) {
+                                   if (e instanceof SocketTimeoutException || e instanceof UnknownHostException) {
                                        ToastMaker.show(ChengWeiScanActivity.this, "网络不给力");
                                    }
                                }

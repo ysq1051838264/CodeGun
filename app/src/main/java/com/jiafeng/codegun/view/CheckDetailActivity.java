@@ -31,6 +31,7 @@ import com.jiafeng.codegun.util.StringUtils;
 import com.jiafeng.codegun.util.ToastMaker;
 
 import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import retrofit2.Retrofit;
@@ -164,7 +165,7 @@ public class CheckDetailActivity extends AppCompatActivity {
                                        pd.dismiss();
                                    }
 
-                                   if (e instanceof SocketTimeoutException) {
+                                   if (e instanceof SocketTimeoutException || e instanceof UnknownHostException) {
                                        ToastMaker.show(CheckDetailActivity.this, "网络不给力");
                                    }
                                }

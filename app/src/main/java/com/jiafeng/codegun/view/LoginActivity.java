@@ -32,6 +32,7 @@ import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.lang.reflect.Method;
 import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 
 import retrofit2.Retrofit;
 import rx.Observable;
@@ -182,7 +183,7 @@ public class LoginActivity extends AppCompatActivity {
                                        pd.dismiss();
                                    }
 
-                                   if (e instanceof SocketTimeoutException) {
+                                   if (e instanceof SocketTimeoutException || e instanceof UnknownHostException) {
                                        ToastMaker.show(LoginActivity.this, "网络不给力");
                                    }
                                }

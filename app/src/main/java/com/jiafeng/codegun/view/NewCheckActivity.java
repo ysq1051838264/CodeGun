@@ -23,6 +23,7 @@ import com.jiafeng.codegun.util.StringUtils;
 import com.jiafeng.codegun.util.ToastMaker;
 
 import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,7 +88,7 @@ public class NewCheckActivity extends AppCompatActivity {
                                        pd.dismiss();
                                    }
 
-                                   if (e instanceof SocketTimeoutException) {
+                                   if (e instanceof SocketTimeoutException || e instanceof UnknownHostException) {
                                        ToastMaker.show(NewCheckActivity.this, "网络不给力");
                                    }
                                }
@@ -148,7 +149,7 @@ public class NewCheckActivity extends AppCompatActivity {
                                            if (pd != null && pd.isShowing()) {
                                                pd.dismiss();
                                            }
-                                           if (e instanceof SocketTimeoutException) {
+                                           if (e instanceof SocketTimeoutException || e instanceof UnknownHostException) {
                                                ToastMaker.show(NewCheckActivity.this, "网络不给力");
                                            }
                                        }
@@ -161,6 +162,7 @@ public class NewCheckActivity extends AppCompatActivity {
 
                                            model.createTime = s.getSheetInfo().getCreateTime();
                                            model.sheetNo = s.getSheetInfo().getSheetNo();
+                                           model.companyNo = s.getSheetInfo().getCompanyNo();
                                            model.sheetStatus = Integer.valueOf(s.getSheetInfo().getSheetStatus());
                                            model.id = s.getSheetInfo().getId();
                                            startActivity(ChengWeiScanActivity.getCallIntent(NewCheckActivity.this, model, false));

@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="盘点入库"
+            android:text="盘点"
             android:textColor="@android:color/white"
             android:textSize="18dp" />
     </RelativeLayout>

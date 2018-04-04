@@ -30,6 +30,7 @@ import com.jiafeng.codegun.util.ShareHelper;
 import com.jiafeng.codegun.util.ToastMaker;
 
 import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import io.realm.RealmChangeListener;
@@ -229,7 +230,7 @@ public class CheckListActivity extends AppCompatActivity {
                                    }
                                    refresh(flag);
 
-                                   if (e instanceof SocketTimeoutException) {
+                                   if (e instanceof SocketTimeoutException || e instanceof UnknownHostException) {
                                        ToastMaker.show(CheckListActivity.this, "网络不给力");
                                    }
                                }
