@@ -47,13 +47,14 @@ public class MultiSelectPopupWindows extends PopupWindow {
         final ListView listView = view.findViewById(R.id.listView_selector);
         final Button selectData = view.findViewById(R.id.selectData);
 
-        setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+        setFocusable(true);
+
+        setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
         setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         setBackgroundDrawable(new BitmapDrawable());
-        setFocusable(true);
         setOutsideTouchable(true);
         setContentView(view);
-        showAtLocation(parent, Gravity.NO_GRAVITY, 0, DensityUtil.dip2px(context, yStart));
+        showAtLocation(parent, 0, DensityUtil.dip2px(context, yStart), DensityUtil.dip2px(context, yStart));
         update();
 
         initListView(listView, data);

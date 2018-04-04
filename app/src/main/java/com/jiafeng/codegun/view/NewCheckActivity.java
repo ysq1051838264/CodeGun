@@ -53,6 +53,8 @@ public class NewCheckActivity extends AppCompatActivity {
     private List<StoreModel> stores;
     private List<StoreModel> selectStores;
 
+    MultiSelectPopupWindows productsMultiSelectPopupWindows;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -187,12 +189,13 @@ public class NewCheckActivity extends AppCompatActivity {
             }
         });
 
-        productType.setOnClickListener(new View.OnClickListener() {
+
+        storeNameLly.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (stores == null)
                     return;
-                MultiSelectPopupWindows productsMultiSelectPopupWindows = new MultiSelectPopupWindows(NewCheckActivity.this, storeNameLly, 170, stores);
+                productsMultiSelectPopupWindows = new MultiSelectPopupWindows(NewCheckActivity.this, image, 170, stores);
                 image.setImageResource(R.drawable.push);
                 productsMultiSelectPopupWindows.setOnDismissListener(new PopupWindow.OnDismissListener() {
                     @Override
