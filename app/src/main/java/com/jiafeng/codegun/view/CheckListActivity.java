@@ -211,7 +211,8 @@ public class CheckListActivity extends AppCompatActivity {
     }
 
     public void requestData(final int flag, final int page) {
-        Observable<StoreList> observable = apiService.getGoodsCheckList(sn, "20", String.valueOf(page));
+        String companyNo = ShareHelper.getInstance().getString(ShareHelper.KEY_COMPANY_NO, null);
+        Observable<StoreList> observable = apiService.getGoodsCheckList(companyNo,sn, "20", String.valueOf(page));
         observable.subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

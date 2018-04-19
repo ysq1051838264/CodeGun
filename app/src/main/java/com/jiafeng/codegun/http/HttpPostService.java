@@ -42,7 +42,7 @@ public interface HttpPostService {
     //3.获取盘点列表
     @POST("getGoodsCheckList.do")
     @FormUrlEncoded
-    Observable<StoreList> getGoodsCheckList(@Field("sn") String sn, @Field("pageSize") String pageSize, @Field("pageNo") String pageNo);
+    Observable<StoreList> getGoodsCheckList(@Field("companyNo") String companyNo,@Field("sn") String sn, @Field("pageSize") String pageSize, @Field("pageNo") String pageNo);
 
     //4.根据ID查询盘点单详情
     @POST("getGoodsCheckDtl.do")
@@ -73,5 +73,4 @@ public interface HttpPostService {
                                            @Field("tidStr") String tidStr,
                                            @Field("sheetId") String sheetId,
                                            @Field("guidStr") String guidStr);
-
 }
